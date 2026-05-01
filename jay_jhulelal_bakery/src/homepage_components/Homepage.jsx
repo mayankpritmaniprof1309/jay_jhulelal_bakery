@@ -26,7 +26,7 @@ const Homepage = (props) => {
       <Homepage_s1 />
       <Homepage_s2 />
 
-      {/* 👇 About section starts here */}
+      {/* About section starts here */}
       <div id="about">
         <Homepage_s3 items={props.items} />
       </div>
