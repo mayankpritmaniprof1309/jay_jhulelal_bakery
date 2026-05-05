@@ -17,7 +17,7 @@ const items=[
     'price':400,
     'qty':' piece',
     'rating':'5',
-  'reviews':'200'
+  'reviews':200
   },
   {
     'name':'Ferrero Rocher cupcake',
@@ -26,7 +26,7 @@ const items=[
     'price':200,
     'qty':' piece',
     'rating':'4',
-  'reviews':'144'
+  'reviews':144
   },
   {
     'name':'Red Velvet cupcake',
@@ -35,7 +35,7 @@ const items=[
     'price':150,
     'qty':' piece',
     'rating':'4',
-  'reviews':'148'
+  'reviews':148
   },
   {
     'name':'Blueberry muffins',
@@ -44,7 +44,7 @@ const items=[
     'price':200,
     'qty':' piece',
     'rating':'3',
-  'reviews':'90'
+  'reviews':90
   },
 
   {
@@ -54,7 +54,7 @@ const items=[
     'price':100,
     'qty':' piece',
     'rating':'4',
-  'reviews':'180'
+  'reviews':180
   },
   
   {
@@ -64,7 +64,7 @@ const items=[
     'price':90,
     'qty':' piece',
     'rating':'4',
-  'reviews':'50'
+  'reviews':50
   },
     
   {
@@ -74,7 +74,7 @@ const items=[
     'price':550,
     'qty':' box',
     'rating':'5',
-  'reviews':'100'
+  'reviews':100
   },
   {
     'name':'Croissants ',
@@ -83,7 +83,7 @@ const items=[
     'price':180,
     'qty':' piece',
     'rating':'3',
-  'reviews':'99'
+  'reviews':99
   },
   {
     'name':'Brownies ',
@@ -92,7 +92,7 @@ const items=[
     'price':250,
     'qty':' piece',
     'rating':'5',
-  'reviews':'250'
+  'reviews':250
   },
   {
     'name':'Tiramisu ',
@@ -101,7 +101,7 @@ const items=[
     'price':500,
     'qty':' piece',
     'rating':'4',
-  'reviews':'100'
+  'reviews':100
   },
   {
     'name':'Multigrain Bread ',
@@ -110,7 +110,7 @@ const items=[
     'price':250,
     'qty':' Loaf (10 inch)',
     'rating':'4',
-  'reviews':'60'
+  'reviews':60
   },
    {
     'name':'Cookie Tin ',
@@ -119,7 +119,7 @@ const items=[
     'price':600,
     'qty':' tin',
     'rating':'5',
-  'reviews':'300'
+  'reviews':300
   },
 
    {
@@ -129,7 +129,7 @@ const items=[
     'price':180,
     'qty':' piece',
     'rating':'3.5',
-  'reviews':'180'
+  'reviews':180
   },
   {
     'name':'Blueberry Cheesecake',
@@ -138,7 +138,7 @@ const items=[
     'price':230,
     'qty':' piece',
     'rating':'5',
-  'reviews':'280'
+  'reviews':280
   },
    
    
@@ -149,7 +149,7 @@ const items=[
     'price':80,
     'qty':' 12 pieces',
     'rating':'3.5',
-  'reviews':'100'
+  'reviews':100
   },
    {
     'name':'Puff Pastry',
@@ -158,7 +158,7 @@ const items=[
     'price':320,
     'qty':' kg',
     'rating':'4',
-  'reviews':'150'
+  'reviews':150
   },
   
 ]
@@ -188,6 +188,7 @@ const App = () => {
         <Route path="/signup" element={<SignUpPage/>} />
 
       </Routes>
+      
   </>
   )
 }
