@@ -13,3 +13,27 @@ Content-Type:application/json
     "email":"mayank@gmail.com",
     "password":"mayank123"
 }
+
+GET http://localhost:3000/api/auth/user/logout
+
+POST http://localhost:3000/api/auth/admin/register
+Content-Type:application/json
+{
+    "firstName":"Admin_1",
+    "lastName":"Admin_1",
+    "email":"admin1@gmail.com",
+    "password":"admin1_123"
+
+}
+
+POST http://localhost:3000/api/auth/admin/login
+Content-Type:application/json
+{
+    "email":"admin@gmail.com",
+    "password":"admin123"
+
+}
+
+GET http://localhost:3000/api/auth/admin/logout
+
+POST http://localhost:3000/cart/

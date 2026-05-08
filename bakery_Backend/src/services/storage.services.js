@@ -1,0 +1,1 @@
+// Here the code for saving image will be writen at the time admin will add any new product
