@@ -26,7 +26,7 @@ const Navbar = () => {
         </div>
 
         <div className='text-2xl'>
-        <Link to="/login">Login</Link>
+        <Link to="/user/login">Login</Link>
         </div>
 
       <div className='space-x-2'> 
