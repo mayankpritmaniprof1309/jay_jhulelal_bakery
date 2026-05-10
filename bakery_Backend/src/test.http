@@ -37,3 +37,32 @@ Content-Type:application/json
 GET http://localhost:3000/api/auth/admin/logout
 
 POST http://localhost:3000/cart/
+
+
+//Get All products 
+GET http://localhost:3000/product/allProducts
+
+//Get User By Id
+GET http://localhost:3000/cart/getUserByToken
+
+//Add Order 
+POST http://localhost:3000/order/placeOrder
+Content-Type:application/json
+{
+    "items": [
+        {
+            "product": "64f1a2b3c4d5e6f7a8b9c0d1",
+            "name": "Chocolate Cake",
+            "image": "https://...",
+            "price": 499,
+            "quantity": 2
+        }
+    ],
+    "totalPrice": 998,
+    "deliveryAddress": {
+        "street": "123 MG Road",
+        "city": "Surat",
+        "pincode": "395001",
+        "phone": "9876543210"
+    }
+}

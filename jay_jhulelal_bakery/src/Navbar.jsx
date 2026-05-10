@@ -22,7 +22,7 @@ const Navbar = () => {
       </div>
 
       <div className='text-2xl'>
-        <Link to="#">Cart</Link>
+        <Link to="/cart">Cart</Link>
         </div>
 
         <div className='text-2xl'>

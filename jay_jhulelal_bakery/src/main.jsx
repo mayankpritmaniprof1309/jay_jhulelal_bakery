@@ -4,14 +4,16 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import './index.css'
 import Navbar from './Navbar.jsx'
 import App from './App.jsx'
-import Products from './productsPage_components/Products.jsx'
+import { CartProvider } from './context/CartProvider.jsx'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
    <BrowserRouter>   {/* ✅ wrap App */}
-      <Navbar />
-      <App />
-    {/* <Route path='/product' element={Products}></Route> */}
+        <CartProvider>
+          <Navbar />
+          <App />
+        </CartProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )

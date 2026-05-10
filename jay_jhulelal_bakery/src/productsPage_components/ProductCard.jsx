@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useCart } from '../context/useCart'
 
 const StarIcon = ({ filled }) => (
   <svg width="12" height="12" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -25,10 +26,32 @@ const HeartIcon = () => (
 const ProductCard = (props) => {
   const [quantity, setQuantity] = useState(1)
 
+  console.log("ProductCard rendered");     // ← add this
+  const { dispatch } = useCart();
+  console.log("dispatch:", dispatch);      // ← add this — if undefined, CartProvider missing
+
+  // FIX 1: extract _id as plain string, don't spread props directly
+  const handelAddCart = () => {
+    // alert("button clicked!"); 
+    console.log("clicked, _id:", props._id?.$oid ?? props._id);
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        _id: props._id?.$oid ?? props._id,  // handles { $oid: "..." } or plain string
+        name: props.name,
+        price: props.price,
+        image: props.image,
+        qty: props.qty,
+        quantity,
+      }
+    });
+  };
+
   const decrease = () => { if (quantity > 1) setQuantity(quantity - 1) }
   const increase = () => { setQuantity(quantity + 1) }
 
   return (
+    // FIX 2: removed console.log from inside return
     <div className="bg-[rgb(230,211,179)] rounded-[20px] w-75 overflow-hidden
                     border border-[rgba(160,110,60,0.25)]
                     shadow-[0_16px_40px_rgba(140,90,40,0.15),0_4px_12px_rgba(140,90,40,0.08)]
@@ -43,13 +66,6 @@ const ProductCard = (props) => {
           alt={props.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
-        {/* Badge */}
-        {/* <span className="absolute top-3 left-3 bg-[rgba(160,80,20,0.88)] text-[#fdf5ec]
-                         text-[10px] font-semibold tracking-widest uppercase
-                         px-2.5 py-0.5 rounded-full">
-          Best seller
-        </span> */}
 
         {/* Wishlist button */}
         <button className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full
@@ -145,6 +161,7 @@ const ProductCard = (props) => {
 
         {/* Add to cart button */}
         <button
+          onClick={handelAddCart}
           className="w-full py-2.75 bg-linear-to-br from-[#a0642a] to-[#7a3f10]
                      text-[#fdf5ec] rounded-xl border-none cursor-pointer
                      flex items-center justify-center gap-2

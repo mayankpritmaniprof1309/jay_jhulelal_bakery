@@ -16,7 +16,7 @@ async function registerUser(req, res) {
 
   const userAlreadyExist = await User.findOne({ email });
   if (userAlreadyExist) {
-    return res.status(400).send({ message: "User Already Exist" });
+    return res.status(409).send({ message: "User Already Exist" });
   }
 
   const user = await User.create({

@@ -1,14 +1,15 @@
 import { EyeOffIcon } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { UserIcon } from "lucide-react";
 import { MailIcon } from "lucide-react";
 import { LockIcon } from "lucide-react";
 import { EyeIcon } from "lucide-react";
+import axios from 'axios';
 
-import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
-function InputField({ id, label, type = "text", placeholder, icon, showToggle }) {
+function InputField({ id, label, type = "text", placeholder, icon, showToggle, value, onChange }) {
   const [show, setShow] = useState(false);
   return (
     <div className="flex flex-col gap-1">
@@ -23,6 +24,8 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle })
           id={id}
           type={showToggle ? (show ? "text" : "password") : type}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
           className="w-full pl-8.5 pr-9 py-[9.5px] text-[13.5px] text-[#3b2409]
                      placeholder-[#b89870] bg-[rgba(245,233,220,0.65)]
                      border-[1.5px] border-[rgba(160,110,60,0.32)] rounded-[10px]
@@ -47,27 +50,82 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle })
 }
 
 export function SignUpForm() {
+  const navigate=useNavigate();
+  const [formData, setFormData] = useState({
+    fname: '',
+    lname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    terms: false,
+  });
+
+  const handleChange = (e) => {
+    const { id, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    if (!formData.terms) {
+      alert('Please accept the Terms of Service');
+      return;
+    }
+
+    try {
+      
+      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
+        firstName: formData.fname,
+        lastName: formData.lname,
+        email: formData.email,
+        password: formData.password,
+      });
+      console.log('Registered:', response.data);
+      navigate('/user/login');
+    } catch (error) {
+      if(error.response?.status===409){
+        alert('User Already Exist')
+      }
+
+      console.error('Registration failed:', error);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-2.5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
       {/* Name row */}
       <div className="grid grid-cols-2 gap-2.5">
-        <InputField id="fname" label="First name" placeholder="Mayank" icon={<UserIcon />} />
-        <InputField id="lname" label="Last name"  placeholder="Pritmani"  icon={<UserIcon />} />
+        <InputField id="fname" label="First name" placeholder="Mayank"
+          icon={<UserIcon />} value={formData.fname} onChange={handleChange} />
+        <InputField id="lname" label="Last name" placeholder="Pritmani"
+          icon={<UserIcon />} value={formData.lname} onChange={handleChange} />
       </div>
 
       {/* Email */}
       <InputField id="email" label="Email address" type="email"
-        placeholder="Mayank@example.com" icon={<MailIcon />} />
+        placeholder="Mayank@example.com" icon={<MailIcon />}
+        value={formData.email} onChange={handleChange} />
 
       {/* Passwords row */}
       <div className="grid grid-cols-2 gap-2.5">
-        <InputField id="pw"  label="Password"         placeholder="••••••••" icon={<LockIcon />} showToggle />
-        <InputField id="cpw" label="Confirm password" placeholder="••••••••" icon={<LockIcon />} showToggle />
+        <InputField id="password" label="Password" placeholder="••••••••"
+          icon={<LockIcon />} showToggle value={formData.password} onChange={handleChange} />
+        <InputField id="confirmPassword" label="Confirm password" placeholder="••••••••"
+          icon={<LockIcon />} showToggle value={formData.confirmPassword} onChange={handleChange} />
       </div>
 
       {/* Terms */}
       <div className="flex items-start gap-2 text-[12px] text-[#7a5c38] mt-1">
-        <input type="checkbox" id="terms" className="mt-0.5 accent-[#a0642a] shrink-0" />
+        <input type="checkbox" id="terms" checked={formData.terms}
+          onChange={handleChange} className="mt-0.5 accent-[#a0642a] shrink-0" />
         <label htmlFor="terms">
           I agree to the{" "}
           <a href="#" className="text-[#8b5020] font-medium hover:underline">Terms of Service</a>
@@ -78,7 +136,7 @@ export function SignUpForm() {
 
       {/* Submit */}
       <button
-        type="button"
+        type="submit"
         className="w-full mt-1 py-2.75 rounded-[10px] text-[#fdf5ec] text-[14px] font-semibold
                    tracking-wide bg-linear-to-br from-[#a0642a] to-[#7a3f10]
                    shadow-[0_4px_14px_rgba(120,70,20,0.32)] transition-all duration-200
@@ -92,6 +150,6 @@ export function SignUpForm() {
         Already have an account?{" "}
         <Link to="/login" className="text-[#7a4010] font-medium hover:underline">Sign in</Link>
       </p>
-    </div>
+    </form>
   );
 }

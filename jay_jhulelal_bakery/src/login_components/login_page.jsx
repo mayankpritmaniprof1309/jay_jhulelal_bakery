@@ -1,11 +1,47 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"
+
 
 export default function LoginPage() {
+  const navigate=useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [formdata, setformdata] = useState({
+    email:'',
+    password:''
+  });
 
+  const handleChange=(e)=>{
+    const {id, value}=e.target;
+    setformdata((prev)=>({
+      ...prev,
+      [id]:value,
+    }))
+  }
+  const handelSubmit= async (e)=>{
+    e.preventDefault();
+    try{
+      const response=await axios.post('http://localhost:3000/api/auth/user/login',{
+        email:formdata.email,
+        password:formdata.password
+      },{
+        withCredentials:true
+      })
+      console.log('User Registered');
+      navigate('/')
+      
+    }catch(err){
+
+      if(err.response?.status===404){
+        alert('Invalid Email or Password')
+      }
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[rgb(245,233,220)] p-6 relative overflow-hidden">
+    <form onSubmit={handelSubmit} className="min-h-screen flex items-center justify-center bg-[rgb(245,233,220)] p-6 relative overflow-hidden">
 
       {/* Dot grid pattern */}
       <div
@@ -44,7 +80,7 @@ export default function LoginPage() {
 
         {/* Email */}
         <div className="mb-4">
-          <label htmlFor="email" className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
+          <label htmlFor="email"  className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
             Email address
           </label>
           <div className="relative">
@@ -52,6 +88,7 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
+              onChange={handleChange}
               placeholder="you@example.com"
               autoComplete="email"
               className="w-full pl-9 pr-3 py-2.5 text-sm text-[#3b2409] placeholder-[#b89870]
@@ -66,7 +103,7 @@ export default function LoginPage() {
 
         {/* Password */}
         <div className="mb-2">
-          <label htmlFor="password" className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
+          <label htmlFor="password"  className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
             Password
           </label>
           <div className="relative">
@@ -74,6 +111,7 @@ export default function LoginPage() {
             <input
               id="password"
               type={showPassword ? "text" : "password"}
+              onChange={handleChange}
               placeholder="••••••••"
               autoComplete="current-password"
               className="w-full pl-9 pr-10 py-2.5 text-sm text-[#3b2409] placeholder-[#b89870]
@@ -104,7 +142,7 @@ export default function LoginPage() {
 
         {/* Login button */}
         <button
-          type="button"
+          type="submit"
           className="w-full py-[11.5px] rounded-xl text-[#fdf5ec] text-[14.5px] font-semibold
                      tracking-wide transition-all duration-200
                      bg-linear-to-br from-[#a0642a] to-[#7a3f10]
@@ -121,7 +159,7 @@ export default function LoginPage() {
           <Link to="/user/register" className="text-[#7a4010] font-medium hover:underline">Create one</Link>
         </p>
       </div>
-    </div>
+    </form>
   );
 }
 
