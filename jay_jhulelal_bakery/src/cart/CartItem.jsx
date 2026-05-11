@@ -1,12 +1,14 @@
 import {TrashIcon} from "./Icons";
+import {useCart} from "../context/CartContext"
 
-const CartItem = ({ item, dispatch }) => {
+const CartItem = ({ item }) => {  // remove dispatch from props
+  const { updateQuantity, removeFromCart } = useCart();
+
   const handleQtyChange = (delta) => {
     const next = item.quantity + delta;
     if (next < 1) return;
-    dispatch({ type: "UPDATE_QUANTITY", payload: { id: item._id, quantity: next } });
+    updateQuantity(item.product, next);  // item.product not item._id
   };
-
   return (
     <div style={{
       display: "flex",
@@ -76,7 +78,7 @@ const CartItem = ({ item, dispatch }) => {
           fontSize: "18px", fontWeight: 700, color: "#7a3f10", marginBottom: "12px",
         }}>₹{item.price * item.quantity}</p>
         <button
-          onClick={() => dispatch({ type: "REMOVE_ITEM", payload: item._id })}
+          onClick={() => removeFromCart(item.product)}
           style={{
             background: "rgba(200,80,60,0.08)", border: "1px solid rgba(200,80,60,0.2)",
             borderRadius: "8px", padding: "6px 10px", cursor: "pointer",

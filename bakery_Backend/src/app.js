@@ -20,9 +20,9 @@ app.use(cookieParser())
 
 
 
-app.use('/cart',cartRoutes)
+app.use('/api/cart',cartRoutes)
 app.use('/api/auth',authRoutes)
-app.use('/product',productRoutes)
-app.use('/order',orderRoutes)
+app.use('/api/product',productRoutes)
+app.use('/api/order',orderRoutes)
 
 module.exports =app;

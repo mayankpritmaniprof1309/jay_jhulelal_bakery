@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useCart } from '../context/useCart'
+import { useCart } from '../context/CartContext'
 
 const StarIcon = ({ filled }) => (
   <svg width="12" height="12" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -26,25 +26,18 @@ const HeartIcon = () => (
 const ProductCard = (props) => {
   const [quantity, setQuantity] = useState(1)
 
-  console.log("ProductCard rendered");     // ← add this
-  const { dispatch } = useCart();
-  console.log("dispatch:", dispatch);      // ← add this — if undefined, CartProvider missing
+  const { addToCart } = useCart();     // ← add this — if undefined, CartProvider missing
 
-  // FIX 1: extract _id as plain string, don't spread props directly
   const handelAddCart = () => {
     // alert("button clicked!"); 
     console.log("clicked, _id:", props._id?.$oid ?? props._id);
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: {
-        _id: props._id?.$oid ?? props._id,  // handles { $oid: "..." } or plain string
-        name: props.name,
-        price: props.price,
-        image: props.image,
-        qty: props.qty,
-        quantity,
-      }
-    });
+    addToCart({
+  _id:      props._id?.$oid ?? props._id,
+  name:     props.name,
+  price:    props.price,
+  image:    props.image,
+  quantity: quantity,
+});
   };
 
   const decrease = () => { if (quantity > 1) setQuantity(quantity - 1) }

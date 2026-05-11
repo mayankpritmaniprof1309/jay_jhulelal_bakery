@@ -2,9 +2,61 @@ const Product=require('../models/Product')
 const jwt=require('jsonwebtoken')
 const User=require('../models/User')
 const mongoose = require('mongoose');
+const Cart = require('../models/Cart');
 
 async function cartManagement(req,res){
-    res.send({message:"Product added"})
+  console.log("BODY:", req.body)  
+    const {action,product,name,image,price,quantity=1}=req.body
+    const userId=req.user._id //From middleware
+
+    try{
+        let cart= await Cart.findOne({user:userId})
+        if(!cart){
+            cart= new Cart({user:userId,items:[]})
+        }
+
+        if (action === "GET") {
+            return res.json({ items: cart.items });
+        }
+
+        if (action === "ADD") {
+      const existing = cart.items.find(
+        (i) => i.product.toString() === product
+      );
+      if (existing) {
+        // product already in cart just incressing the quantity
+        existing.quantity += quantity;
+      } else {
+        // new product 
+        cart.items.push({ product, name, image, price, quantity });
+      }
+    }
+
+    if (action === "REMOVE") {
+      cart.items = cart.items.filter(
+        (i) => i.product.toString() !== product
+      );
+    }
+
+  if (action === "UPDATE") {
+  const item = cart.items.find(
+    (i) => i.product.toString() === product
+  );
+  if (item) {
+    item.quantity = quantity;
+  }
+}
+
+    if (action === "CLEAR") {
+      cart.items = [];
+    }
+
+    await cart.save();
+    return res.json({ items: cart.items });
+
+    }catch(err){
+        return res.status(500).json({ message: "Cart error", error: err.message });
+    }
 }
 
 

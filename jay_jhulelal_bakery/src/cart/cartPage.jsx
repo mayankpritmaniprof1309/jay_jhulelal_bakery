@@ -1,14 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../context/useCart";
+import { useCart } from "../context/CartContext";
 import CartItem from "./CartItem";
 import OrderSummary from "./OrderSummary";
 import EmptyCart from "./EmptyCart";
+import axios from 'axios'
+import { useEffect, useState } from "react";
 
 const CartPage = () => {
   const navigate = useNavigate();
   const { cart, dispatch } = useCart();
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const [cartItems, setcartItems] = useState([])
+  // const handelAddToCartbutton = async()=>{
+  //   const cart= await axios.post(
+  //     'http://localhost:3000/api/cart',
+  //   {
+  //     action:"ADD",
+  //     product:user._id,
+  //     items:cart.map(item=>{
+
+  //     })
+  //   }  
+  //   )
+  // }
+
+
 
   return (
     <div style={{

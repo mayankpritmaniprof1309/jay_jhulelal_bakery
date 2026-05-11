@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import './index.css'
 import Navbar from './Navbar.jsx'
 import App from './App.jsx'
-import { CartProvider } from './context/CartProvider.jsx'
+import { CartProvider } from './context/CartContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(

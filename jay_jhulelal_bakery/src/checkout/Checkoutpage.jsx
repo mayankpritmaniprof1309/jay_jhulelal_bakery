@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/useCart';
+import { useCart } from '../context/CartContext';
 import StepIndicator from './Stepindicator';
 import DeliveryForm from './deliveryform';
 import PaymentForm from './Paymentform';
 import OrderReview from './OrderReview';
 import OrderSuccess from './Ordersuccess';
+import axios from 'axios'
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const { cart, dispatch } = useCart();
+  const { cart, clearCart } = useCart();
   const [step, setStep] = useState(0);
   const [placing, setPlacing] = useState(false);
   const [form, setForm] = useState({
     fullName: '', phone: '', email: '', address: '',
     city: '', state: '', pincode: '', landmark: '',
     deliveryType: '0',
-    paymentMethod: 'card',
+    paymentMethod: 'cod',
     cardName: '', cardNumber: '', expiry: '', cvv: '',
     upiId: '',
   });
@@ -24,14 +25,42 @@ const CheckoutPage = () => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handlePlaceOrder = () => {
-    setPlacing(true);
-    setTimeout(() => {
-      dispatch({ type: 'CLEAR_CART' });
-      setStep(3); // success screen
-      setPlacing(false);
-    }, 1800);
+    
   };
 
+  const handelPlaceOrderApi = async () => {
+  setPlacing(true);
+  try {
+    await axios.post(
+      'http://localhost:3000/api/order/placeOrder',
+      {
+        items: cart.map(item => ({
+          product:  item.product,   // ✓ correct field
+          name:     item.name,
+          image:    item.image,
+          price:    item.price,
+          quantity: item.quantity,
+        })),
+        deliveryAddress: {
+          street:  form.address,
+          city:    form.city,
+          pincode: form.pincode,
+          phone:   form.phone,
+        },
+      },
+      { withCredentials: true }
+    );
+
+    await clearCart();     // ✓ clears cart in DB + state
+    setStep(3);            // show success screen only after API succeeds
+
+  } catch (err) {
+    console.error("Order failed:", err);
+    alert("Failed to place order. Please try again.");
+  } finally {
+    setPlacing(false);
+  }
+};
   return (
     <div style={{
       minHeight: '100vh',
@@ -77,7 +106,7 @@ const CheckoutPage = () => {
           {step === 2 && (
             <OrderReview
               form={form} cart={cart} total={total}
-              onPlace={handlePlaceOrder} onBack={() => setStep(1)}
+              onPlace={handelPlaceOrderApi} onBack={() => setStep(1)}
               placing={placing}
             />
           )}

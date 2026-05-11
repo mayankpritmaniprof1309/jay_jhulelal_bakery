@@ -2,27 +2,18 @@ const jwt=require('jsonwebtoken')
 const Order=require('../models/Order')
 
 
-async function  placeOrder(req, res) {
+async function placeOrder(req, res) {
     try {
-        const token = req.cookies.token;
-        if (!token) return res.status(401).json({ message: "Please login first" });
+        const { items, deliveryAddress } = req.body;
 
-        // Get user ID from token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        const { items, totalPrice, deliveryAddress } = req.body;
-
-        // Validate required fields
         if (!items || items.length === 0) {
             return res.status(400).json({ message: "Order must have at least one item" });
         }
-        if (!totalPrice) {
-            return res.status(400).json({ message: "Total price is required" });
-        }
 
-        // Create order
+        const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
         const order = await Order.create({
-            user: decoded.id,
+            user: req.user._id, // ✅ comes from middleware, no token logic needed
             items,
             totalPrice,
             deliveryAddress,

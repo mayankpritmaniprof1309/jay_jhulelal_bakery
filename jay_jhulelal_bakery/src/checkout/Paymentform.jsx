@@ -3,14 +3,14 @@ import FormField from './Formfield';
 import { CardIcon, LockIcon } from './Checkouticons';
 
 const methods = [
-  { id: 'card', label: 'Credit / Debit Card', icon: '💳' },
-  { id: 'upi',  label: 'UPI',                 icon: '⚡' },
+  // { id: 'card', label: 'Credit / Debit Card', icon: '💳' },  //Currently disabled but can be used in future
+  // { id: 'upi',  label: 'UPI',                 icon: '⚡' },  //Currently disabled but can be used in future
   { id: 'cod',  label: 'Cash on Delivery',    icon: '💵' },
 ];
 
 const PaymentForm = ({ form, setForm, onNext, onBack }) => {
   const update = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }));
-  const method = form.paymentMethod || 'card';
+  const method = form.paymentMethod || 'cod';
 
   const handleNext = () => {
     console.log("Review Order clicked, calling onNext");

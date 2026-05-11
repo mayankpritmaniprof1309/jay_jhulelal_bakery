@@ -6,7 +6,7 @@ const useProducts = () => {
   const [error, setError]       = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3000/product/allProducts')  // ← correct URL
+    fetch('http://localhost:3000/api/product/allProducts')  // ← correct URL
       .then(res => res.json())
       .then(json => {
 
