@@ -27,7 +27,7 @@ export function CartProvider({ children }) {
       name:     product.name,
       image:    product.image,
       price:    product.price,
-      quantity: 1,
+      quantity: product.quantity,
     });
     setCart(res.data.items);
   };

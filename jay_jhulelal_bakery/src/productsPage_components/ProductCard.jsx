@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useCart } from '../context/CartContext'
+import {useNavigate} from 'react-router-dom'
 
 const StarIcon = ({ filled }) => (
   <svg width="12" height="12" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -24,20 +25,46 @@ const HeartIcon = () => (
 )
 
 const ProductCard = (props) => {
+  const navigate=useNavigate()
   const [quantity, setQuantity] = useState(1)
 
   const { addToCart } = useCart();     // ← add this — if undefined, CartProvider missing
 
-  const handelAddCart = () => {
-    // alert("button clicked!"); 
-    console.log("clicked, _id:", props._id?.$oid ?? props._id);
+  const handelAddCart = async() => {
+    
+    try {
+    const res = await fetch('http://localhost:3000/api/cart', {
+      method: 'POST',
+      credentials: 'include',        // sends cookie automatically
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _id:      props._id?.$oid ?? props._id,
+        name:     props.name,
+        price:    props.price,
+        image:    props.image,
+        quantity: quantity,
+      })
+    })
+
+    if (res.status === 401) {
+      alert('Please log in first to add items to the cart!')
+      navigate('/user/login')
+      return
+    }
+
+    // ✅ Only adds to cart if user is logged in
     addToCart({
-  _id:      props._id?.$oid ?? props._id,
-  name:     props.name,
-  price:    props.price,
-  image:    props.image,
-  quantity: quantity,
-});
+      _id:      props._id?.$oid ?? props._id,
+      name:     props.name,
+      price:    props.price,
+      image:    props.image,
+      quantity: quantity,
+    })
+
+  } catch (err) {
+    console.error('Add to cart failed:', err)
+  }
+
   };
 
   const decrease = () => { if (quantity > 1) setQuantity(quantity - 1) }

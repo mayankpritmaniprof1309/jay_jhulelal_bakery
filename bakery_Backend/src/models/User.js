@@ -1,16 +1,3 @@
-// ─────────────────────────────────────────
-//  models/User.js  —  MongoDB User Schema
-// ─────────────────────────────────────────
-//
-//  A "model" is a blueprint for a document
-//  stored in MongoDB. Think of it like a
-//  table definition in SQL.
-//
-//  mongoose.Schema defines the shape of the
-//  document. mongoose.model turns it into a
-//  class you can use to create/read/update/
-//  delete documents in the "users" collection.
-//
 
 const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');

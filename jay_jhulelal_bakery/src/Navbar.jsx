@@ -31,6 +31,7 @@ const Navbar = () => {
 
       <div className='space-x-2'> 
         <input
+        disabled
           className='border-2 rounded-2xl p-1'
           placeholder='Search'
           type='text'

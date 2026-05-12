@@ -56,7 +56,22 @@ async function loginUser(req,res) {
         if(!isMatch) return res.status(404).send({message:"Invallid User Or Password!!"})
 
         const token=generatetoken(userExist._id)
-        res.cookie("token",token)
+        res.cookie(
+          "token",token,
+          {
+            httpOnly: true,   // keep token httpOnly for security
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          }
+        )
+        res.cookie(
+          "isAdmin",userExist.isAdmin,
+          {
+            httpOnly: false,  // must be false — React's AuthContext reads this
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          }
+        )
         res.status(200).send({
             message:"Logged In Successfully ",
             user: {
@@ -122,7 +137,22 @@ try{
     if(!isMatch) return res.status(400).send({message:"Invalid Email Or Passowrd !!"})
     
     const token=generatetoken(admin._id);
-    res.cookie("token",token)   
+    res.cookie(
+          "token",token,
+          {
+            httpOnly: true,   // keep token httpOnly for security
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          }
+        )
+        res.cookie(
+          "isAdmin",userExist.isAdmin,
+          {
+            httpOnly: false,  // must be false — React's AuthContext reads this
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          }
+        )   
     return res.status(200).send({
         message:"Admin Logged In Successfully !!",
         data:{

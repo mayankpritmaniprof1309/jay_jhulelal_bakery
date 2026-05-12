@@ -24,18 +24,17 @@ const CheckoutPage = () => {
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handlePlaceOrder = () => {
-    
-  };
+
 
   const handelPlaceOrderApi = async () => {
+     console.log('Cart items being sent:', JSON.stringify(cart, null, 2));
   setPlacing(true);
   try {
     await axios.post(
       'http://localhost:3000/api/order/placeOrder',
       {
         items: cart.map(item => ({
-          product:  item.product,   // ✓ correct field
+          product:  item._id,   // ✓ correct field
           name:     item.name,
           image:    item.image,
           price:    item.price,

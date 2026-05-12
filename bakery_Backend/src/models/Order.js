@@ -1,16 +1,3 @@
-// ─────────────────────────────────────────────
-//  models/Order.js  —  MongoDB Order Schema
-// ─────────────────────────────────────────────
-//
-//  When a user clicks "Add to cart" and checks
-//  out, an Order document is created.
-//
-//  An order has:
-//  - a reference to the User who placed it
-//  - an array of items (each item = product + qty)
-//  - a total price
-//  - a status (pending → processing → delivered)
-//
 
 const mongoose = require('mongoose');
 
