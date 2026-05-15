@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import StepIndicator from './Stepindicator';
-import DeliveryForm from './Deliveryform';
+import DeliveryForm from './Deliveryform.jsx';
 import PaymentForm from './Paymentform';
 import OrderReview from './OrderReview';
 import OrderSuccess from './Ordersuccess';

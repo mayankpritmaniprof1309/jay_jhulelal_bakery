@@ -1,5 +1,5 @@
 import React from 'react'
-import S3_card from './S3_Card'
+import S3_card from './S3_Card.jsx'
 
 const Homepage_s3 = ({ items }) => {
 
