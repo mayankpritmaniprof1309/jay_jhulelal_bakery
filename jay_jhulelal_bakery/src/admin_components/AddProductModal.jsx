@@ -50,7 +50,7 @@ export default function AddProductModal({ onClose, onAdded }) {
       fd.append("stock", form.stock);
       if (imageFile) fd.append("image", imageFile); // multer field name: "image"
 
-      const { data } = await axios.post(`http://localhost:3000/api/product/newProduct`, fd, {
+      const { data } = await axios.post(`${import.meta.env.API_URL}/api/product/newProduct`, fd, {
         headers: { ...headers, "Content-Type": "multipart/form-data" },
       });
 
