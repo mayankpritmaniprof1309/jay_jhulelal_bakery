@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "lsof -ti:5173 | xargs kill -9 ; true",
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm install lightningcss && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
