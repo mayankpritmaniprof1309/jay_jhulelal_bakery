@@ -58,22 +58,19 @@ async function loginUser(req,res) {
         if(!isMatch) return res.status(404).send({message:"Invallid User Or Password!!"})
 
         const token=generatetoken(userExist._id)
-        res.cookie(
-          "token",token,
-          {
-            httpOnly: false,   
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-          }
-        )
-        res.cookie(
-          "isAdmin",userExist.isAdmin,
-          {
-            httpOnly: false,  // must be false — React's AuthContext reads this
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-          }
-        )
+        res.cookie("token", token, {
+          httpOnly: true,        // ✅ safer — token should never be read by JS
+          secure: true,          // ✅ required for sameSite: "none"
+          sameSite: "none",      // ✅ required for cross-origin (Vercel → Render)
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        res.cookie("isAdmin", userExist.isAdmin, {
+          httpOnly: false,       // ✅ keep false — React reads this directly
+          secure: true,          // ✅ required on HTTPS
+          sameSite: "none",      // ✅ must match token — both cross-origin
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.status(200).send({
             message:"Logged In Successfully ",
             user: {
