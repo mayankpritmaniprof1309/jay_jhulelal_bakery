@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
     setError("");
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.API_URL}/api/auth/user/requestPasswordReset`, { email });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/requestPasswordReset`, { email });
       setStep("reset");
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong. Try again.");
@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
     }
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.API_URL}0/api/auth/user/resetPassword`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}0/api/auth/user/resetPassword`, {
         token,
         newPassword,
       });

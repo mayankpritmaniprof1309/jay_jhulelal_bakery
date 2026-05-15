@@ -81,7 +81,7 @@ export function SignUpForm() {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.API_URL}/api/auth/user/register`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/register`, {
         firstName: formData.fname,
         lastName: formData.lname,
         email: formData.email,

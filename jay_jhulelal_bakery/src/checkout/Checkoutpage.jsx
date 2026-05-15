@@ -31,7 +31,7 @@ const CheckoutPage = () => {
   setPlacing(true);
   try {
     await axios.post(
-      `${import.meta.env.API_URL}/api/order/placeOrder`,
+      `${import.meta.env.VITE_API_URL}/api/order/placeOrder`,
       {
         items: cart.map(item => ({
           product:  item.product,   // ✓ correct field

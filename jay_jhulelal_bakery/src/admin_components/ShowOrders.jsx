@@ -44,7 +44,7 @@ function PaidToggle({ orderId, isPaid, onChange }) {
       const token = getToken();
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       await axios.put(
-        `${import.meta.env.API_URL}/api/order/updateIsPaid/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/order/updateIsPaid/${orderId}`,
         { isPaid: !isPaid },
         { headers }
       );
@@ -83,7 +83,7 @@ function StatusSelect({ orderId, current, onChange }) {
       const token = getToken();
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       await axios.put(
-        `${import.meta.env.API_URL}/api/order/updateStatus/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/order/updateStatus/${orderId}`,
         { status: newStatus },
         { headers }
       );
@@ -124,7 +124,7 @@ export function ShowOrders() {
     try {
       const token = getToken();
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const { data } = await axios.get(`${import.meta.env.API_URL}/api/order/populateUsers`, { headers });
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/order/populateUsers`, { headers });
       // handle both array and { orders: [...] } response shapes
       setOrders(Array.isArray(data) ? data : data.orders ?? []);
     } catch (err) {

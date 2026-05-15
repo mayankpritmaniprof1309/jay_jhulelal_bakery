@@ -77,9 +77,9 @@ export default function DashboardPage () {
     try {
       const [{ data: allOrders }, { data: allProducts }, { data: allUsers }] =
         await Promise.all([
-          axios.get(`${import.meta.env.API_URL}/api/order/populateUsers`, { headers }),
-          axios.get(`${import.meta.env.API_URL}/api/product/allProducts`,   { headers }),
-          axios.get(`${import.meta.env.API_URL}/api/auth/admin/getAllUsers`,      { headers }),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/order/populateUsers`, { headers }),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/product/allProducts`,   { headers }),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/auth/admin/getAllUsers`,      { headers }),
         ]);
 
         

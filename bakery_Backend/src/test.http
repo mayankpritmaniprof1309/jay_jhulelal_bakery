@@ -73,6 +73,7 @@ Content-Type:application/json
 
 //Get All products 
 GET http://localhost:3000/api/product/allProducts
+https://jay-jhulelal-bakery.onrender.com/api/product/allProducts
 
 //Get User By Id
 GET http://localhost:3000/api/cart/getUserByToken

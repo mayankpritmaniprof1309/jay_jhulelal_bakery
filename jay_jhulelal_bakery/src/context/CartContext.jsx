@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 const CartContext = createContext();
-const API = `${import.meta.env.API_URL}/api/cart`;
+const API = `${import.meta.env.VITE_API_URL}/api/cart`;
 
 const cartRequest = (body) =>
   axios.post(API, body, { withCredentials: true });
