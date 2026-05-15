@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import{showCartToast} from './cartToast'
 
 const StarIcon = ({ filled }) => (
   <svg width="12" height="12" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -33,19 +34,27 @@ const ProductCard = (props) => {
 
   const handelAddCart = async (product) => {
   try {
-     await addToCart({
+    await addToCart({
       _id:      props._id?.$oid ?? props._id,
       name:     props.name,
       price:    props.price,
       image:    props.image,
       quantity: quantity,
     });
+ 
+    // ✅ Show the toast after a successful add
+    showCartToast({
+      name:  props.name,
+      image: props.image,
+      price: props.price,
+    });
+ 
   } catch (err) {
     if (err.response?.status === 401) {
-      alert('Please log in first to add items to the cart!');
-      navigate('/user/login');
+      alert("Please log in first to add items to the cart!");
+      navigate("/user/login");
     } else {
-      console.error('Add to cart failed:', err.response?.data || err.message);
+      console.error("Add to cart failed:", err.response?.data || err.message);
     }
   }
 };
