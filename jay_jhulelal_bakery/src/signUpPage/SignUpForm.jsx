@@ -81,7 +81,7 @@ export function SignUpForm() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
+      const response = await axios.post(`${import.meta.env.API_URL}/api/auth/user/register`, {
         firstName: formData.fname,
         lastName: formData.lname,
         email: formData.email,

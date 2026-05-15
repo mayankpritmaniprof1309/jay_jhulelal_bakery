@@ -11,7 +11,7 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
 useEffect(() => {
     const fetchUserDetails = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/cart/getUserByToken", {
+            const response = await axios.get(`${import.meta.env.API_URL}/api/cart/getUserByToken`, {
                 withCredentials: true  // ← required for cookies
             });
             setuser(response.data.user);

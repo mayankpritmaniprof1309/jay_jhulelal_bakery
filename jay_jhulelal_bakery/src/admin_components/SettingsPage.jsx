@@ -45,7 +45,7 @@ export default function AdminSettingsPage() {
   const fetchLowStock = async () => {
     setStockLoading(true);
     try {
-      const res = await axios.get('http://localhost:3000/api/product/lowStock', {
+      const res = await axios.get(`${import.meta.env.API_URL}/api/product/lowStock`, {
         withCredentials: true,
       });
       setLowStock(res.data);

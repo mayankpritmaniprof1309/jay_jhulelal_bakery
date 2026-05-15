@@ -77,16 +77,12 @@ export default function DashboardPage () {
     try {
       const [{ data: allOrders }, { data: allProducts }, { data: allUsers }] =
         await Promise.all([
-          axios.get("http://localhost:3000/api/order/populateUsers", { headers }),
-          axios.get("http://localhost:3000/api/product/allProducts",   { headers }),
-          axios.get("http://localhost:3000/api/auth/admin/getAllUsers",      { headers }),
+          axios.get(`${import.meta.env.API_URL}/api/order/populateUsers`, { headers }),
+          axios.get(`${import.meta.env.API_URL}/api/product/allProducts`,   { headers }),
+          axios.get(`${import.meta.env.API_URL}/api/auth/admin/getAllUsers`,      { headers }),
         ]);
 
         
-        // const allOrders= await axios.get("http://localhost:3000/api/order/getAllOrders");
-        // const allProducts= await  axios.get("http://localhost:3000/api/product/allProducts");
-        // const allUsers= await axios.get("http://localhost:3000/api/auth/admin/getAllUsers");
-
       const totalRevenue = allOrders
         .filter(o => o.status !== "cancelled")
         .filter(o => o.isPaid !== false)

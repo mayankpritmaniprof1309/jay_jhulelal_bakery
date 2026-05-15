@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const BASE = "http://localhost:3000/api";
+const BASE = `${import.meta.env.API_URL}/api`;
 
 function getToken() {
   try {

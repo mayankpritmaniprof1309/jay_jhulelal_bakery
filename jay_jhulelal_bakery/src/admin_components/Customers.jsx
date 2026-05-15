@@ -130,8 +130,8 @@ export default function CustomersPage() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [usersRes, ordersRes] = await Promise.all([
-        axios.get(`http://localhost:3000/api/auth/admin/getAllUsers`, { headers }),
-        axios.get(`http://localhost:3000/api/order/getAllOrders`,     { headers }),
+        axios.get(`${import.meta.env.API_URL}/api/auth/admin/getAllUsers`, { headers }),
+        axios.get(`${import.meta.env.API_URL}/api/order/getAllOrders`,     { headers }),
       ]);
 
       const allUsers  = Array.isArray(usersRes.data)  ? usersRes.data  : usersRes.data.users  ?? [];

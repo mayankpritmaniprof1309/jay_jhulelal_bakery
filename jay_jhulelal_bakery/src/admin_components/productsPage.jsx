@@ -48,7 +48,7 @@ function ProductCard({ product, onEdit, onDelete }) {
     setDeleting(true);
     try {
       const token = getToken();
-      await axios.delete(`http://localhost:3000/api/product/deleteProduct/${product._id}`, {
+      await axios.delete(`${import.meta.env.API_URL}/api/product/deleteProduct/${product._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onDelete(product._id);
@@ -140,7 +140,7 @@ export default function ProductsPage() {
     try {
       const token = getToken();
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const { data } = await axios.get(`http://localhost:3000/api/product/allProducts`, { headers });
+      const { data } = await axios.get(`${import.meta.env.API_URL}/api/product/allProducts`, { headers });
       setProducts(Array.isArray(data) ? data : data.products ?? []);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to load products.");

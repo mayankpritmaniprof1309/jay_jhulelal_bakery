@@ -31,7 +31,7 @@ export default function LoginPage() {
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/user/login', {
+      const response = await axios.post(`${import.meta.env.API_URL}/api/auth/user/login`, {
         email: formdata.email,
         password: formdata.password
       }, {
