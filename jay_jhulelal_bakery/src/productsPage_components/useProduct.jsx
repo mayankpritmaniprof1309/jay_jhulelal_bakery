@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios  from 'axios'
 
 const useProducts = () => {
+  console.log(import.meta.env.VITE_API_URL);
+  
   const [products, setProducts] = useState([]);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);
