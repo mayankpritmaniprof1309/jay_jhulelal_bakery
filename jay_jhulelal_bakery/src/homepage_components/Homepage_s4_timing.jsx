@@ -1,5 +1,4 @@
 import React from 'react'
-import S3_card from './S3_card'
 import S4_card_for_image from './S4_card_for_image'
 
 const Homepage_s4_timing = () => {
