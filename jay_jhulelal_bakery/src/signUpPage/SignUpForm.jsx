@@ -81,7 +81,6 @@ export function SignUpForm() {
     }
 
     try {
-      
       const response = await axios.post('http://localhost:3000/api/auth/user/register', {
         firstName: formData.fname,
         lastName: formData.lname,
@@ -94,7 +93,6 @@ export function SignUpForm() {
       if(error.response?.status===409){
         alert('User Already Exist')
       }
-
       console.error('Registration failed:', error);
     }
   };
@@ -102,7 +100,7 @@ export function SignUpForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
       {/* Name row */}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <InputField id="fname" label="First name" placeholder="Mayank"
           icon={<UserIcon />} value={formData.fname} onChange={handleChange} />
         <InputField id="lname" label="Last name" placeholder="Pritmani"
@@ -115,7 +113,7 @@ export function SignUpForm() {
         value={formData.email} onChange={handleChange} />
 
       {/* Passwords row */}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <InputField id="password" label="Password" placeholder="••••••••"
           icon={<LockIcon />} showToggle value={formData.password} onChange={handleChange} />
         <InputField id="confirmPassword" label="Confirm password" placeholder="••••••••"

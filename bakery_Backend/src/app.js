@@ -10,11 +10,11 @@ const orderRoutes=require('../src/routes/order.routes')
 
 const productRoutes=require('../src/routes/product.routes')
 
-app.use(express.json())
 app.use(cors({
-origin: "http://localhost:5173",  // ← Exact URL, no wildcard
+  origin: "http://localhost:5173",  // ← Exact URL, no wildcard
   credentials: true,
 }))
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 

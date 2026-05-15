@@ -55,7 +55,7 @@ async function cartManagement(req,res){
     return res.json({ items: cart.items });
 
     }catch(err){
-        return res.status(500).json({ message: "Cart error", error: err.message });
+        return res.status(401).json({ message: "Cart error", error: err.message });
     }
 }
 
@@ -69,10 +69,9 @@ async function getUserByToken(req, res) {
         const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ _id: new mongoose.Types.ObjectId(decode.id) });
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.send({user})
-        if (!user) return res.status(404).json({ message: "User not found" });
 
-        return res.status(200).json({ data: user });
 
     } catch (err) {
         return res.status(401).json({ message: err.message });

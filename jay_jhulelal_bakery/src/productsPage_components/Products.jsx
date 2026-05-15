@@ -4,7 +4,6 @@ import ProductCard from './ProductCard'
 
 
 const Products = (props) => {
-  console.log('Image URL:', props.image)
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
                 gap-6 justify-items-center px-6 py-6 bg-[rgb(245,233,220)] '>

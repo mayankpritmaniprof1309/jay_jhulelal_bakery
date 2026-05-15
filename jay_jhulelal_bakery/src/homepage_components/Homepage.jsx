@@ -21,13 +21,13 @@ const Homepage = (props) => {
   }, [location]);
 
   return (
-    <div className='bg-[rgb(245,233,220)]'>
+    <div className='bg-[rgb(245,233,220)] px-1 md:px-0'>
 
       <Homepage_s1 />
       <Homepage_s2 />
 
       {/* About section starts here */}
-      <div id="about">
+      <div id="about" className='mt-5 md:mt-0'>
         <Homepage_s3 items={props.items} />
       </div>
 

@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const {sendEmail}=require('../controllers/emailService')
 
 const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -59,7 +61,7 @@ async function loginUser(req,res) {
         res.cookie(
           "token",token,
           {
-            httpOnly: true,   // keep token httpOnly for security
+            httpOnly: false,   
             sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
           }
@@ -78,8 +80,12 @@ async function loginUser(req,res) {
                 id: userExist._id,
                 email:userExist.email,
                 firstName: userExist.firstName,
+                isAdmin:userExist.isAdmin,
+                token: generatetoken(userExist._id)
             },
-                token: generatetoken(userExist._id),
+
+                
+                
         })
 
     }catch(err){
@@ -140,13 +146,13 @@ try{
     res.cookie(
           "token",token,
           {
-            httpOnly: true,   // keep token httpOnly for security
+            httpOnly: false,   // keep token httpOnly for security
             sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
           }
         )
         res.cookie(
-          "isAdmin",userExist.isAdmin,
+          "isAdmin",admin.isAdmin,
           {
             httpOnly: false,  // must be false — React's AuthContext reads this
             sameSite: "lax",
@@ -170,6 +176,67 @@ function logoutAdmin(req,res){
     res.clearCookie("token")
     res.status(200).send({message:"Admin logged Out Successfully !!"})
 }
+
+async function getAllUsers (req,res){
+  const users = await User.find({isAdmin:false})
+  try{}catch(err){}
+  if(!users) return res.status(400).send({message:"Errorr User not Found"})
+
+  return res.status(200).send(users)
+}
+
+
+
+//Password reset Api for req and update
+// Step 1 — Request reset
+async function requestPasswordReset(req, res) {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).send({ message: "User not found" });
+
+    const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour
+
+    // ✅ Direct assignment + save() triggers the pre-save hook
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = resetTokenExpiry;
+    await user.save();
+
+    const resetLink = `${resetToken}`;/////////////
+    await sendEmail(user.email, resetLink);
+
+    return res.status(200).send({ message: "Reset link sent to email" });
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+}
+
+// Step 2 — Reset password
+async function resetPassword(req, res) {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) return res.status(400).send({ message: "Invalid or expired token" });
+
+    // ✅ Assign directly so isModified('password') returns true
+    //    and the pre-save hook hashes it automatically
+    user.password = newPassword;
+    user.resetToken = null;
+    user.resetTokenExpiry = null;
+    await user.save();              // ← hook fires here, hashes newPassword
+
+    return res.status(200).send({ message: "Password updated" });
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+}
 module.exports = {
   registerUser,
   loginUser,
@@ -177,5 +244,11 @@ module.exports = {
 
   registerAdmin,
   loginAdmin,
-  logoutAdmin
+  logoutAdmin,
+
+  getAllUsers,
+
+requestPasswordReset,
+resetPassword
+
 };

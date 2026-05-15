@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import { useCart } from "../context/CartContext"; 
+import { useAuth } from "../context/AuthContext.jsx";         // ← ADD THIS
 import { MailIcon } from "./loginIcons.jsx";
 import { LockIcon } from "./loginIcons.jsx";
 import { EyeOffIcon } from "./loginIcons.jsx";
@@ -10,36 +11,49 @@ import { EyeIcon } from "./loginIcons.jsx";
 
 
 export default function LoginPage() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { fetchCart } = useCart();     
+  const { login } = useAuth();                           // ← ADD THIS
   const [showPassword, setShowPassword] = useState(false);
   const [formdata, setformdata] = useState({
-    email:'',
-    password:''
+    email: '',
+    password: ''
   });
 
-  const handleChange=(e)=>{
-    const {id, value}=e.target;
-    setformdata((prev)=>({
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setformdata((prev) => ({
       ...prev,
-      [id]:value,
+      [id]: value,
     }))
   }
-  const handelSubmit= async (e)=>{
-    e.preventDefault();
-    try{
-      const response=await axios.post('http://localhost:3000/api/auth/user/login',{
-        email:formdata.email,
-        password:formdata.password
-      },{
-        withCredentials:true
-      })
-      console.log('User Registered');
-      navigate('/')
-      
-    }catch(err){
 
-      if(err.response?.status===404){
+  const handelSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/user/login', {
+        email: formdata.email,
+        password: formdata.password
+      }, {
+        withCredentials: true
+      })
+      const userData = response.data.user
+
+      login(userData)                               // ← ADD THIS
+      // response.data should be: { _id, name, email, ... }
+      // your backend already sets the isAdmin cookie, AuthContext reads it
+
+      await fetchCart();                                 // ← refresh cart after login
+
+      // Redirect: admin goes to /admin, regular user goes to /
+      if (userData.isAdmin) {                      // ← ADD THIS
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
+
+    } catch (err) {
+      if (err.response?.status === 404) {
         alert('Invalid Email or Password')
       }
     }
@@ -86,7 +100,7 @@ export default function LoginPage() {
 
         {/* Email */}
         <div className="mb-4">
-          <label htmlFor="email"  className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
+          <label htmlFor="email" className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
             Email address
           </label>
           <div className="relative">
@@ -109,7 +123,7 @@ export default function LoginPage() {
 
         {/* Password */}
         <div className="mb-2">
-          <label htmlFor="password"  className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
+          <label htmlFor="password" className="block text-[12.5px] font-medium text-[#5c3d1e] mb-1.5 tracking-wide">
             Password
           </label>
           <div className="relative">
@@ -140,7 +154,7 @@ export default function LoginPage() {
 
         {/* Forgot password */}
         <div className="flex justify-end -mt-0.5 mb-6">
-          <a href="#" className="text-[12.5px] font-medium text-[#8b5020] hover:text-[#5c3210]
+          <a href="/forgetPassword" className="text-[12.5px] font-medium text-[#8b5020] hover:text-[#5c3210]
                                   hover:underline transition-colors duration-150">
             Forgot password?
           </a>
@@ -168,4 +182,3 @@ export default function LoginPage() {
     </form>
   );
 }
-

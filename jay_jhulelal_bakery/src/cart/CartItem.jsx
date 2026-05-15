@@ -1,20 +1,22 @@
 import {TrashIcon} from "./Icons";
 import {useCart} from "../context/CartContext"
 
-const CartItem = ({ item }) => {  // remove dispatch from props
+const CartItem = ({ item }) => {
   const { updateQuantity, removeFromCart } = useCart();
 
   const handleQtyChange = (delta) => {
     const next = item.quantity + delta;
     if (next < 1) return;
-    updateQuantity(item.product, next);  // item.product not item._id
+    updateQuantity(item.product, next);
   };
+
   return (
     <div style={{
       display: "flex",
-      gap: "20px",
+      flexWrap: "wrap",
+      gap: "12px",
       alignItems: "center",
-      padding: "20px 24px",
+      padding: "14px 16px",
       background: "rgba(255,255,255,0.55)",
       borderRadius: "20px",
       border: "1px solid rgba(180,130,80,0.15)",
@@ -26,7 +28,7 @@ const CartItem = ({ item }) => {  // remove dispatch from props
 
       {/* Image */}
       <div style={{
-        width: "88px", height: "88px", borderRadius: "14px",
+        width: "72px", height: "72px", borderRadius: "14px",
         overflow: "hidden", flexShrink: 0,
         boxShadow: "0 6px 20px rgba(120,70,20,0.18)",
       }}>
@@ -38,7 +40,7 @@ const CartItem = ({ item }) => {  // remove dispatch from props
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
           fontFamily: "'Playfair Display', serif",
-          fontSize: "17px", fontWeight: 600,
+          fontSize: "15px", fontWeight: 600,
           color: "#3b2409", marginBottom: "4px",
           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
         }}>{item.name}</p>
@@ -47,11 +49,11 @@ const CartItem = ({ item }) => {  // remove dispatch from props
         </p>
 
         {/* Qty control */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           {[-1, null, +1].map((delta, i) =>
             delta === null ? (
               <span key="val" style={{
-                width: "32px", height: "32px", borderRadius: "10px",
+                width: "30px", height: "30px", borderRadius: "10px",
                 background: "rgba(245,233,220,0.9)",
                 border: "1px solid rgba(160,110,60,0.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
@@ -59,7 +61,7 @@ const CartItem = ({ item }) => {  // remove dispatch from props
               }}>{item.quantity}</span>
             ) : (
               <button key={i} onClick={() => handleQtyChange(delta)} style={{
-                width: "32px", height: "32px", borderRadius: "10px",
+                width: "30px", height: "30px", borderRadius: "10px",
                 background: "rgba(245,233,220,0.9)",
                 border: "1px solid rgba(160,110,60,0.25)",
                 cursor: "pointer", fontSize: "18px", lineHeight: 1,
@@ -75,7 +77,7 @@ const CartItem = ({ item }) => {  // remove dispatch from props
       <div style={{ textAlign: "right", flexShrink: 0 }}>
         <p style={{
           fontFamily: "'Playfair Display', serif",
-          fontSize: "18px", fontWeight: 700, color: "#7a3f10", marginBottom: "12px",
+          fontSize: "16px", fontWeight: 700, color: "#7a3f10", marginBottom: "10px",
         }}>₹{item.price * item.quantity}</p>
         <button
           onClick={() => removeFromCart(item.product)}

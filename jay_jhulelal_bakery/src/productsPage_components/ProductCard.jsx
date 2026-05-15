@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 const StarIcon = ({ filled }) => (
   <svg width="12" height="12" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -28,51 +29,32 @@ const ProductCard = (props) => {
   const navigate=useNavigate()
   const [quantity, setQuantity] = useState(1)
 
-  const { addToCart } = useCart();     // ← add this — if undefined, CartProvider missing
+  const { addToCart } = useCart();
 
-  const handelAddCart = async() => {
-    
-    try {
-    const res = await fetch('http://localhost:3000/api/cart', {
-      method: 'POST',
-      credentials: 'include',        // sends cookie automatically
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        _id:      props._id?.$oid ?? props._id,
-        name:     props.name,
-        price:    props.price,
-        image:    props.image,
-        quantity: quantity,
-      })
-    })
-
-    if (res.status === 401) {
-      alert('Please log in first to add items to the cart!')
-      navigate('/user/login')
-      return
-    }
-
-    // ✅ Only adds to cart if user is logged in
-    addToCart({
+  const handelAddCart = async (product) => {
+  try {
+     await addToCart({
       _id:      props._id?.$oid ?? props._id,
       name:     props.name,
       price:    props.price,
       image:    props.image,
       quantity: quantity,
-    })
-
+    });
   } catch (err) {
-    console.error('Add to cart failed:', err)
+    if (err.response?.status === 401) {
+      alert('Please log in first to add items to the cart!');
+      navigate('/user/login');
+    } else {
+      console.error('Add to cart failed:', err.response?.data || err.message);
+    }
   }
-
-  };
+};
 
   const decrease = () => { if (quantity > 1) setQuantity(quantity - 1) }
   const increase = () => { setQuantity(quantity + 1) }
 
   return (
-    // FIX 2: removed console.log from inside return
-    <div className="bg-[rgb(230,211,179)] rounded-[20px] w-75 overflow-hidden
+    <div className="bg-[rgb(230,211,179)] rounded-[20px] w-full sm:w-75 overflow-hidden
                     border border-[rgba(160,110,60,0.25)]
                     shadow-[0_16px_40px_rgba(140,90,40,0.15),0_4px_12px_rgba(140,90,40,0.08)]
                     transition-all duration-300 ease-[cubic-bezier(.34,1.56,.64,1)]
@@ -80,7 +62,7 @@ const ProductCard = (props) => {
                     hover:shadow-[0_24px_50px_rgba(140,90,40,0.22)]">
 
       {/* ── Image area ── */}
-      <div className="relative h-50 bg-[rgba(200,170,120,0.2)] overflow-hidden group">
+      <div className="relative h-48 sm:h-50 bg-[rgba(200,170,120,0.2)] overflow-hidden group">
         <img
           src={props.image}
           alt={props.name}
@@ -97,10 +79,10 @@ const ProductCard = (props) => {
       </div>
 
       {/* ── Body ── */}
-      <div className="px-4.5 pt-4 pb-4.5">
+      <div className="px-4 sm:px-4.5 pt-4 pb-4 sm:pb-4.5">
 
         {/* Name */}
-        <h2 className="font-['Playfair_Display',serif] text-[20px] text-[#3b2409]
+        <h2 className="font-['Playfair_Display',serif] text-[18px] sm:text-[20px] text-[#3b2409]
                        leading-tight mb-1.5">
           {props.name}
         </h2>
@@ -118,7 +100,7 @@ const ProductCard = (props) => {
 
           {/* Price + qty unit */}
           <div className="flex items-baseline gap-1">
-            <span className="font-['Playfair_Display',serif] text-[22px] font-semibold text-[#7a3f10]">
+            <span className="font-['Playfair_Display',serif] text-[20px] sm:text-[22px] font-semibold text-[#7a3f10]">
               ₹{props.price}
             </span>
             <span className="text-[11px] text-[#a07850] font-medium">

@@ -1,0 +1,28 @@
+// src/theme.js — Bakery colour tokens & shadow values
+
+export const C = {
+  bg: "#FAF3EC",
+  bgCard: "#FFFFFF",
+  bgSidebar: "#2C1A0E",
+  bgSidebarHover: "#3D2512",
+  bgSidebarActive: "#7B3F1A",
+  primary: "#8B3A0F",
+  primaryLight: "#C4622D",
+  primaryDark: "#5C2408",
+  accent: "#D4A853",
+  accentLight: "#F0C878",
+  text: "#2C1A0E",
+  textMuted: "#7A5C45",
+  textSidebar: "#E8D5C4",
+  textSidebarMuted: "#9E7E6A",
+  border: "#E8D0BB",
+  borderLight: "#F0E4D7",
+  success: "#2D7A4A",
+  successBg: "#E8F5EE",
+  warning: "#8B6A0F",
+  warningBg: "#FBF3DC",
+  danger: "#8B1A1A",
+  dangerBg: "#FCE8E8",
+  shadow: "0 2px 12px rgba(139,58,15,0.10)",
+  shadowLg: "0 8px 32px rgba(139,58,15,0.15)",
+};

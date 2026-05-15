@@ -7,6 +7,8 @@ import SignUpPage from '../signUpPage/SignUpPage';
 import CartPage from '../cart/cartPage';
 import CheckoutPage from '../checkout/Checkoutpage';
 import useProducts from '../productsPage_components/useProduct';
+import ForgotPasswordPage from '../login_components/ForgetPassword';
+
 
 // Only the pages that need products are wrapped here
 const HomepageWithProducts = () => {
@@ -32,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/user/register"  element={<SignUpPage />} />
       <Route path="/cart"           element={<CartPage />} />
       <Route path="/checkout"       element={<CheckoutPage />} />
+      <Route path="/forgetPassword"       element={<ForgotPasswordPage />} />
     </Routes>
   );
 };

@@ -98,3 +98,58 @@ Content-Type:application/json
     }
 }
 
+
+//GET all Orders 
+GET http://localhost:3000/api/order/getAllOrders
+
+//Get all users(Customers)
+GET http://localhost:3000/api/auth/admin/getAllUsers
+
+//Populate users
+
+GET http://localhost:3000/api/order/populateUsers
+
+//Update isPaid Api
+GET http://localhost:3000/api/order/updateIsPaid/6a0107529c4000c94b41ba94
+
+//Update status
+PUT http://localhost:3000/api/order/updateStatus/6a0107529c4000c94b41ba94
+Content-Type:application/json
+{
+    "status":"Cancelled"
+}
+
+//Add New Product
+POST http://localhost:3000/api/product/newProduct
+Content-Type:application/json
+{
+    "name":"Muffin",
+    "image":"https://ik.imagekit.io/mk8pjviaa/jayJhulelalBakery/photo-1557925923-6982bd9650ff_q=80&w=986&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA_3D_3D",
+    "desc":"Golden, fluffy muffins crafted for a warm and indulgent experience in every bite.",
+    "price":100,
+    "qty":"piece",
+    "rating":4,
+    "reviews":100,
+    "stock":90,
+    "category":"cake",
+    "isAvailable":true
+}
+
+//Update Product
+PUT http://localhost:3000/api/product/updateProduct/6a05a85edac10bb96c9f86cc
+Content-Type:application/json
+{
+    "name":"Muffin",
+    "image":"https://ik.imagekit.io/mk8pjviaa/jayJhulelalBakery/photo-1557925923-6982bd9650ff_q=80&w=986&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA_3D_3D",
+    "desc":"Golden, fluffy muffins crafted for a warm and indulgent experience in every bite.",
+    "price":100,
+    "qty":"piece",
+    "rating":4,
+    "reviews":100,
+    "stock":90,
+    "category":"cake",
+    "isAvailable":true
+}
+
+//Delete Product
+GET http://localhost:3000/api/product/deleteProduct/6a05a85edac10bb96c9f86cc

@@ -26,15 +26,15 @@ const CheckoutPage = () => {
 
 
 
-  const handelPlaceOrderApi = async () => {
-     console.log('Cart items being sent:', JSON.stringify(cart, null, 2));
+  const handelPlaceOrderApi = async (req,res) => {
+
   setPlacing(true);
   try {
     await axios.post(
       'http://localhost:3000/api/order/placeOrder',
       {
         items: cart.map(item => ({
-          product:  item._id,   // ✓ correct field
+          product:  item.product,   // ✓ correct field
           name:     item.name,
           image:    item.image,
           price:    item.price,
@@ -54,7 +54,7 @@ const CheckoutPage = () => {
     setStep(3);            // show success screen only after API succeeds
 
   } catch (err) {
-    console.error("Order failed:", err);
+    console.error("Order failed:", err.response?.data);
     alert("Failed to place order. Please try again.");
   } finally {
     setPlacing(false);

@@ -13,26 +13,12 @@ const CartPage = () => {
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const [cartItems, setcartItems] = useState([])
-  // const handelAddToCartbutton = async()=>{
-  //   const cart= await axios.post(
-  //     'http://localhost:3000/api/cart',
-  //   {
-  //     action:"ADD",
-  //     product:user._id,
-  //     items:cart.map(item=>{
-
-  //     })
-  //   }  
-  //   )
-  // }
-
-
 
   return (
     <div style={{
       minHeight: "100vh",
       background: "linear-gradient(160deg, #fdf5ec 0%, #f5e9d6 50%, #ede0cc 100%)",
-      padding: "40px 24px 60px",
+      padding: "40px 16px 60px",
       fontFamily: "sans-serif",
     }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto 32px" }}>
@@ -49,7 +35,7 @@ const CartPage = () => {
       <div style={{
         maxWidth: "1100px", margin: "0 auto",
         display: "grid",
-        gridTemplateColumns: cart.length === 0 ? "1fr" : "1fr 340px",
+        gridTemplateColumns: cart.length === 0 ? "1fr" : "1fr",
         gap: "24px",
         alignItems: "start",
       }}>

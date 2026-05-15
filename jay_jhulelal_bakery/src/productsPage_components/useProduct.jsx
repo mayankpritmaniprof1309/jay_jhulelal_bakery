@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios  from 'axios'
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
@@ -6,15 +7,12 @@ const useProducts = () => {
   const [error, setError]       = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/product/allProducts')  // ← correct URL
-      .then(res => res.json())
-      .then(json => {
-
-        if (json.success) setProducts(json.data);
-        else setError('Could not load products');
-      })
-      .catch(() => setError('Server unreachable'))
-      .finally(() => setLoading(false));
+    async function getProducts(){
+    const response=await axios.get('http://localhost:3000/api/product/allProducts')
+    await setLoading(false)
+    setProducts(response.data)
+   }
+   getProducts()
   }, []);
 
   return { products, loading, error };

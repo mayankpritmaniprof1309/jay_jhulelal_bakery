@@ -12,12 +12,12 @@ export function CartProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // load cart on mount (replaces initial reducer state)
-  useEffect(() => {
-    cartRequest({ action: "GET" })
-      .then((res) => setCart(res.data.items ?? []))
-      .catch(() => setCart([]))
-      .finally(() => setLoading(false));
-  }, []);
+useEffect(() => {
+  cartRequest({ action: "GET" })
+    .then((res) => setCart(res.data.items ?? []))
+    .catch(() => setCart([]))
+    .finally(() => setLoading(false));
+}, []);
 
   // replaces ADD_TO_CART
   const addToCart = async (product) => {

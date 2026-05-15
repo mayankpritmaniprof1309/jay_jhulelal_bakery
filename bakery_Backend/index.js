@@ -1,10 +1,9 @@
-//USED TO START A SERVER
+// server.js
+require('dotenv').config();
 
-const { configDotenv } = require('dotenv')
-const app=require('./src/app')
-const connectDB=require('./src/db/db')
+const app = require('./src/app');
+const connectDB = require('./src/db/db');
 
+connectDB();
 
-connectDB()
-
-app.listen(3000)
+app.listen(3000,"0.0.0.0");

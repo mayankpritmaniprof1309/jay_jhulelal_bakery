@@ -2,7 +2,7 @@ import React from 'react'
 
 const Homepage_s5_map = () => {
   return (
-    <div className="relative  w-full mt-5 h-125 rounded-xl overflow-hidden">
+    <div className="relative w-full mt-5 h-96 md:h-125 rounded-xl overflow-hidden">
 
       {/* MAP */}
       <iframe
@@ -14,26 +14,26 @@ const Homepage_s5_map = () => {
       ></iframe>
 
       {/* OVERLAY */}
-      <div className="absolute bottom-0 w-full bg-[rgb(151,122,115)]/90 text-[rgb(242,239,226)] p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="absolute bottom-0 w-full bg-[rgb(151,122,115)]/90 text-[rgb(242,239,226)] p-4 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
 
         <div>
-          <h2 className="font-bold">Bakery</h2>
-          <p className="text-sm">Treat your sweet tooth here!</p>
+          <h2 className="font-bold text-sm md:text-base">Bakery</h2>
+          <p className="text-xs md:text-sm">Treat your sweet tooth here!</p>
         </div>
 
         <div>
-          <h2 className="font-bold">Location</h2>
-          <p className="text-sm">Anand, Gujarat</p>
+          <h2 className="font-bold text-sm md:text-base">Location</h2>
+          <p className="text-xs md:text-sm">Anand, Gujarat</p>
         </div>
 
         <div>
-          <h2 className="font-bold">Hours</h2>
-          <p className="text-sm">9 AM - 11 PM</p>
+          <h2 className="font-bold text-sm md:text-base">Hours</h2>
+          <p className="text-xs md:text-sm">9 AM - 11 PM</p>
         </div>
 
         <div>
-          <h2 className="font-bold">Contact</h2>
-          <p className="text-sm">+91 9998799987</p>
+          <h2 className="font-bold text-sm md:text-base">Contact</h2>
+          <p className="text-xs md:text-sm">+91 9998799987</p>
         </div>
 
       </div>

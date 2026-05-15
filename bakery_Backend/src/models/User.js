@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,    // regular user by default
     },
+    resetToken:        { type: String, default: null },
+    resetTokenExpiry:  { type: Date,   default: null },
   },
   {
     // Automatically adds createdAt and updatedAt fields
