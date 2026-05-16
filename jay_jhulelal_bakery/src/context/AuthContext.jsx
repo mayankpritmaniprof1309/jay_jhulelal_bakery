@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "./CartContext"; // ✅ import cart context
 
 const AuthContext = createContext(null);
 
-// Reads a cookie value by name
 const getCookie = (name) => {
   const match = document.cookie
     .split('; ')
@@ -12,57 +12,56 @@ const getCookie = (name) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const navigate=useNavigate()
+  const navigate           = useNavigate();
+  const { refreshCart }    = useCart();           // ✅ refresh cart on login
   const [user, setUser]       = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // On app load — restore user from localStorage + read isAdmin cookie
-  // This keeps the user logged in on page refresh
+  // ── restore session on page refresh ───────────────────────────────
   useEffect(() => {
     const stored = localStorage.getItem("bakery_user");
     if (stored) {
       try {
-        setUser(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        setUser(parsed);
+        setIsAdmin(parsed.isAdmin === true); // ✅ read from stored object, not cookie
       } catch {
         localStorage.removeItem("bakery_user");
       }
     }
-
-    // isAdmin cookie is set by your backend on login
-    setIsAdmin(getCookie("isAdmin") === "true");
-
     setLoading(false);
   }, []);
 
-  // Called from LoginPage after successful API response
-  // userData = response.data = { _id, name, email, isAdmin, ... }
-  const login = (userData) => {
-    setTimeout(() => {                          // ← ADD this wrapper
-  if (userData.isAdmin) {
-    navigate('/admin')
-  } else {
-    navigate('/')
-  }
-}, 50) 
+  // ── login ──────────────────────────────────────────────────────────
+  const login = useCallback((userData) => {
+    // ✅ set state first, then navigate — no setTimeout needed
     setUser(userData);
+    setIsAdmin(userData.isAdmin === true);
     localStorage.setItem("bakery_user", JSON.stringify(userData));
 
-    // Backend already set the cookie, but we also sync state from
-    // response.data.isAdmin so the UI updates instantly without waiting
-    // for a cookie read
-    setIsAdmin(userData.isAdmin === true);
-  };
+    refreshCart(); // ✅ load cart immediately after login
 
-  const logout = () => {
+    if (userData.isAdmin) {
+      navigate('/admin');
+    } else {
+      navigate('/');
+    }
+  }, [navigate, refreshCart]);
+
+  // ── logout ─────────────────────────────────────────────────────────
+  const logout = useCallback(() => {
     setUser(null);
     setIsAdmin(false);
     localStorage.removeItem("bakery_user");
 
-    // Clear the isAdmin cookie
-    document.cookie = "isAdmin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
-  };
+    // ✅ properly clear cross-origin cookies
+    const cookieOptions = "expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure";
+    document.cookie = `isAdmin=; ${cookieOptions}`;
+    document.cookie = `token=; ${cookieOptions}`;
+
+    navigate('/');
+  }, [navigate]);
 
   return (
     <AuthContext.Provider value={{
