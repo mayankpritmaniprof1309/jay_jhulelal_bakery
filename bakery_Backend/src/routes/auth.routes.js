@@ -26,4 +26,27 @@ router.get('/admin/getAllUsers',middleware.authProtectMiddleware,middleware.chec
 router.post('/user/requestPasswordReset',authController.requestPasswordReset)
 router.post('/user/resetPassword',authController.resetPassword)
 
+
+
+
+
+// Add temporarily to auth.routes.js
+const { sendOrderConfirmationEmail } = require('../controllers/emailService');
+
+router.get('/test-email', async (req, res) => {
+  try {
+    await sendOrderConfirmationEmail(
+      'put-your-own-email@gmail.com',
+      'Test User',
+      {
+        items: [{ name: 'Blueberry Cheesecake', quantity: 2, price: 230 }],
+        total: 460
+      }
+    );
+    res.json({ success: true, message: 'Email sent!' });
+  } catch (err) {
+    res.json({ success: false, error: err.message }); // ← exact error here
+  }
+});
+
 module.exports=router
