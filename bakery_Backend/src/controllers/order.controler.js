@@ -62,10 +62,7 @@ async function placeOrder(req, res) {
     // ✅ Step 4 — Send confirmation email
     console.log('📧 Attempting email to:', req.user.email);
     sendOrderConfirmationEmail(
-      console.log('✅ Email sent');
-} catch (err) {
-  console.error('❌ Email error:', err.message); // check Render logs for this
-}
+      
       req.user.email,
       `${req.user.firstName} ${req.user.lastName}`,
       {
@@ -73,6 +70,7 @@ async function placeOrder(req, res) {
         total: totalPrice,
       }
     )
+    console.log('✅ Email sent')
     .then(() => console.log('✅ Email sent to:', req.user.email))
     .catch((err) => console.error('❌ Email failed:', err.message));
 
