@@ -1,13 +1,8 @@
-import { EyeOffIcon } from "lucide-react";
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { UserIcon } from "lucide-react";
-import { MailIcon } from "lucide-react";
-import { LockIcon } from "lucide-react";
-import { EyeIcon } from "lucide-react";
-import axios from 'axios';
-
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { UserIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon } from "./Icons";
 
 function InputField({ id, label, type = "text", placeholder, icon, showToggle, value, onChange }) {
   const [show, setShow] = useState(false);
@@ -26,7 +21,7 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle, v
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="w-full pl-8.5 pr-9 py-[9.5px] text-[13.5px] text-[#3b2409]
+          className="w-full pl-8 pr-9 py-[9.5px] text-[13.5px] text-[#3b2409]
                      placeholder-[#b89870] bg-[rgba(245,233,220,0.65)]
                      border-[1.5px] border-[rgba(160,110,60,0.32)] rounded-[10px]
                      outline-none transition-all duration-200
@@ -50,7 +45,7 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle, v
 }
 
 export function SignUpForm() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
@@ -81,19 +76,24 @@ export function SignUpForm() {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/register`, {
-        firstName: formData.fname,
-        lastName: formData.lname,
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/user/register`,
+        {
+          firstName: formData.fname,
+          lastName:  formData.lname,
+          email:     formData.email,
+          password:  formData.password,
+        }
+      );
       console.log('Registered:', response.data);
       navigate('/user/login');
     } catch (error) {
-      if(error.response?.status===409){
-        alert('User Already Exist')
+      if (error.response?.status === 409) {
+        alert('User already exists');
+      } else {
+        alert('Registration failed. Please try again.');
+        console.error('Registration failed:', error);
       }
-      console.error('Registration failed:', error);
     }
   };
 
@@ -135,7 +135,7 @@ export function SignUpForm() {
       {/* Submit */}
       <button
         type="submit"
-        className="w-full mt-1 py-2.75 rounded-[10px] text-[#fdf5ec] text-[14px] font-semibold
+        className="w-full mt-1 py-3 rounded-[10px] text-[#fdf5ec] text-[14px] font-semibold
                    tracking-wide bg-linear-to-br from-[#a0642a] to-[#7a3f10]
                    shadow-[0_4px_14px_rgba(120,70,20,0.32)] transition-all duration-200
                    hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-[0_8px_24px_rgba(120,70,20,0.4)]
@@ -146,7 +146,7 @@ export function SignUpForm() {
 
       <p className="text-center text-[12.5px] text-[#8a6040] mt-1">
         Already have an account?{" "}
-        <Link to="/login" className="text-[#7a4010] font-medium hover:underline">Sign in</Link>
+        <Link to="/user/login" className="text-[#7a4010] font-medium hover:underline">Sign in</Link>
       </p>
     </form>
   );

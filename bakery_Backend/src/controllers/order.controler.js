@@ -70,7 +70,6 @@ async function placeOrder(req, res) {
         total: totalPrice,
       }
     )
-    console.log('✅ Email sent')
     .then(() => console.log('✅ Email sent to:', req.user.email))
     .catch((err) => console.error('❌ Email failed:', err.message));
 

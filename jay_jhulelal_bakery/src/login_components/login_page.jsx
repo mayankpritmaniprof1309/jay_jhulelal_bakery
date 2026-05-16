@@ -1,65 +1,38 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import axios from "axios"
-import { useCart } from "../context/CartContext"; 
-import { useAuth } from "../context/AuthContext.jsx";         // ← ADD THIS
-import { MailIcon } from "./loginIcons.jsx";
-import { LockIcon } from "./loginIcons.jsx";
-import { EyeOffIcon } from "./loginIcons.jsx";
-import { EyeIcon } from "./loginIcons.jsx";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext.jsx";
+import { MailIcon, LockIcon, EyeOffIcon, EyeIcon } from "./loginIcons.jsx";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { fetchCart } = useCart();     
-  const { login } = useAuth();                           // ← ADD THIS
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [formdata, setformdata] = useState({
-    email: '',
-    password: ''
-  });
+  const [formdata, setformdata] = useState({ email: '', password: '' });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setformdata((prev) => ({
-      ...prev,
-      [id]: value,
-    }))
-  }
+    setformdata((prev) => ({ ...prev, [id]: value }));
+  };
 
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/login`, {
-        email: formdata.email,
-        password: formdata.password
-      }, {
-        withCredentials: true
-      })
-      const userData = response.data.user
-
-      login(userData)                               // ← ADD THIS
-      // response.data should be: { _id, name, email, ... }
-      // your backend already sets the isAdmin cookie, AuthContext reads it
-
-      await fetchCart();                                 // ← refresh cart after login
-
-      // Redirect: admin goes to /admin, regular user goes to /
-      if (userData.isAdmin) {                      // ← ADD THIS
-        navigate('/admin')
-      } else {
-        navigate('/')
-      }
-
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/user/login`,
+        { email: formdata.email, password: formdata.password }
+        // ✅ no withCredentials needed — using localStorage now
+      );
+      login(response.data.user); // ✅ login() handles navigate + refreshCart
     } catch (err) {
       if (err.response?.status === 404) {
-        alert('Invalid Email or Password')
+        alert('Invalid Email or Password');
+      } else {
+        console.error('Login error:', err.message);
       }
     }
-  }
+  };
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <form onSubmit={handelSubmit} className="min-h-screen flex items-center justify-center bg-[rgb(245,233,220)] p-6 relative overflow-hidden">
 

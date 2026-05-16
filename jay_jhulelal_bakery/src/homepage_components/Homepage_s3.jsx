@@ -1,16 +1,85 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import S3_card from './S3_Card.jsx'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const Homepage_s3 = ({ items }) => {
+  const trackRef    = useRef(null)
+  const isDragging  = useRef(false)
+  const startX      = useRef(0)
+  const scrollStart = useRef(0)
+  const dragMoved   = useRef(false) // ✅ track if user dragged vs clicked
+  const navigate    = useNavigate()
 
-  const loopItems = [...items, ...items]
+  const scroll = (dir) => {
+    const card = trackRef.current?.querySelector('[data-card]')
+    const step = card ? card.offsetWidth + 24 : 300
+    trackRef.current.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
+  const onMouseDown = (e) => {
+    isDragging.current  = true
+    dragMoved.current   = false  // ✅ reset on each press
+    startX.current      = e.pageX
+    scrollStart.current = trackRef.current.scrollLeft
+    trackRef.current.style.cursor = 'grabbing'
+  }
+  const onMouseMove = (e) => {
+    if (!isDragging.current) return
+    const delta = e.pageX - startX.current
+    if (Math.abs(delta) > 5) dragMoved.current = true // ✅ only flag as drag if moved enough
+    trackRef.current.scrollLeft = scrollStart.current - delta
+  }
+  const onMouseUp = () => {
+    isDragging.current = false
+    trackRef.current.style.cursor = 'grab'
+  }
+
+  const onTouchStart = (e) => {
+    startX.current      = e.touches[0].pageX
+    scrollStart.current = trackRef.current.scrollLeft
+    dragMoved.current   = false
+  }
+  const onTouchMove = (e) => {
+    const delta = e.touches[0].pageX - startX.current
+    if (Math.abs(delta) > 5) dragMoved.current = true
+    trackRef.current.scrollLeft = scrollStart.current - delta
+  }
 
   return (
-    <div className="overflow-hidden mx-3 ps-4 md:ps-10 rounded-xl bg-[rgb(151,122,115)]">
+    <div className="relative mx-3 mb-4 rounded-xl bg-[rgb(151,122,115)] overflow-hidden">
 
-      <div className="flex gap-3 md:gap-6 animate-scroll">
-        {loopItems.map((elem, i) => (
-          <div key={i} className="min-w-[80%] md:min-w-[25%]">
+      <button
+        onClick={() => scroll(-1)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10
+                   bg-white/20 hover:bg-white/40 transition
+                   rounded-full p-2 backdrop-blur-sm"
+      >
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </button>
+
+      <div
+        ref={trackRef}
+        className="flex gap-1 md:gap-2 px-4 md:px-10 py-4
+                   overflow-x-auto scroll-smooth
+                   cursor-grab select-none
+                   [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+      >
+        {items.map((elem, i) => (
+          <div
+            key={i}
+            data-card
+            className="min-w-[80%] md:min-w-[28%] shrink-0 cursor-pointer"
+            onClick={() => {
+              if (!dragMoved.current) navigate('/product') // ✅ only navigate if not dragging
+            }}
+          >
             <S3_card
               name={elem.name}
               image={elem.image}
@@ -19,6 +88,15 @@ const Homepage_s3 = ({ items }) => {
           </div>
         ))}
       </div>
+
+      <button
+        onClick={() => scroll(1)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10
+                   bg-white/20 hover:bg-white/40 transition
+                   rounded-full p-2 backdrop-blur-sm"
+      >
+        <ChevronRight className="w-6 h-6 text-white" />
+      </button>
 
     </div>
   )

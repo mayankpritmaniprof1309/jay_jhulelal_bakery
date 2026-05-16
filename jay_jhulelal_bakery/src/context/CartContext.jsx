@@ -4,29 +4,42 @@ import axios from "axios";
 const CartContext = createContext();
 const API = `${import.meta.env.VITE_API_URL}/api/cart`;
 
-const cartRequest = (body, signal) =>
-  axios.post(API, body, { withCredentials: true, signal });
+const cartRequest = (body, signal) => {
+  const user  = JSON.parse(localStorage.getItem("bakery_user") || "{}");
+  const token = user?.token;
+  return axios.post(API, body, {
+    signal,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+};
+
+// ✅ flatten MongoDB ObjectId fields to plain strings
+const normalizeItems = (items) =>
+  (items ?? []).map(item => ({
+    ...item,
+    product: item.product?.$oid ?? item.product,
+    _id:     item._id?.$oid     ?? item._id,
+  }));
 
 export function CartProvider({ children }) {
   const [cart, setCart]       = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);   // ✅ surface errors to UI
+  const [error, setError]     = useState(null);
 
-  // ── load cart on mount ──────────────────────────────────────────────
   useEffect(() => {
     const controller = new AbortController();
-    const timeout    = setTimeout(() => controller.abort(), 8000); // ✅ 8s timeout
+    const timeout    = setTimeout(() => controller.abort(), 8000);
 
     cartRequest({ action: "GET" }, controller.signal)
       .then((res) => {
-        setCart(res.data.items ?? []);
+        setCart(normalizeItems(res.data.items)); // ✅
         setError(null);
       })
       .catch((err) => {
         if (axios.isCancel(err) || err.code === "ERR_CANCELED") {
-          setError("Server is waking up, please wait…"); // ✅ Render cold start message
+          setError("Server is waking up, please wait…");
         } else if (err.response?.status === 401) {
-          setCart([]);  // not logged in — silently clear
+          setCart([]);
         } else {
           setError("Failed to load cart.");
           console.error("Cart GET failed:", err.message);
@@ -40,13 +53,10 @@ export function CartProvider({ children }) {
 
     return () => {
       clearTimeout(timeout);
-      controller.abort(); // ✅ cancel on unmount
+      controller.abort();
     };
   }, []);
 
-  // ── helpers ─────────────────────────────────────────────────────────
-
-  // ✅ wrap mutations in try/catch so callers can handle errors
   const addToCart = useCallback(async (product) => {
     const res = await cartRequest({
       action:   "ADD",
@@ -56,18 +66,18 @@ export function CartProvider({ children }) {
       price:    product.price,
       quantity: product.quantity ?? 1,
     });
-    setCart(res.data.items);
+    setCart(normalizeItems(res.data.items)); // ✅
   }, []);
 
   const updateQuantity = useCallback(async (productId, quantity) => {
     if (quantity < 1) return removeFromCart(productId);
     const res = await cartRequest({ action: "UPDATE", product: productId, quantity });
-    setCart(res.data.items);
+    setCart(normalizeItems(res.data.items)); // ✅
   }, []);
 
   const removeFromCart = useCallback(async (productId) => {
     const res = await cartRequest({ action: "REMOVE", product: productId });
-    setCart(res.data.items);
+    setCart(normalizeItems(res.data.items)); // ✅
   }, []);
 
   const clearCart = useCallback(async () => {
@@ -75,11 +85,10 @@ export function CartProvider({ children }) {
     setCart([]);
   }, []);
 
-  // ✅ refresh cart manually (e.g. after login)
   const refreshCart = useCallback(async () => {
     setLoading(true);
     cartRequest({ action: "GET" })
-      .then((res) => setCart(res.data.items ?? []))
+      .then((res) => setCart(normalizeItems(res.data.items))) // ✅
       .catch((err) => {
         if (err.response?.status !== 401) console.error("Cart refresh failed:", err.message);
         setCart([]);

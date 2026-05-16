@@ -26,15 +26,19 @@ const CheckoutPage = () => {
 
 
 
-  const handelPlaceOrderApi = async (req,res) => {
-
+  const handelPlaceOrderApi = async () => {
+    console.log('cart items:', JSON.stringify(cart));
   setPlacing(true);
   try {
+    // ✅ read token from localStorage
+    const user  = JSON.parse(localStorage.getItem("bakery_user") || "{}");
+    const token = user?.token;
+
     await axios.post(
       `${import.meta.env.VITE_API_URL}/api/order/placeOrder`,
       {
         items: cart.map(item => ({
-          product:  item.product,   // ✓ correct field
+          product:  item.product?.$oid ?? item.product ?? item._id,
           name:     item.name,
           image:    item.image,
           price:    item.price,
@@ -47,13 +51,21 @@ const CheckoutPage = () => {
           phone:   form.phone,
         },
       },
-      { withCredentials: true }
+      {
+        headers: { Authorization: `Bearer ${token}` }, // ✅ send token in header
+      }
     );
 
-    await clearCart();     // ✓ clears cart in DB + state
-    setStep(3);            // show success screen only after API succeeds
+    await clearCart();
+    setStep(3);
 
   } catch (err) {
+     console.error("Order failed:", {
+    message:  err.message,
+    response: err.response?.data,
+    status:   err.response?.status,
+    url:      err.config?.url,       // ✅ shows exact URL being called
+  });
     console.error("Order failed:", err.response?.data);
     alert("Failed to place order. Please try again.");
   } finally {

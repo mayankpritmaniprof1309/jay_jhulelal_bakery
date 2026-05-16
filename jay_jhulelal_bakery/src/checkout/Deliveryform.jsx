@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormField from './Formfield';
 import { LocationIcon } from './Checkouticons';
-import axios from 'axios'
-import { useEffect } from 'react';
 
 const DeliveryForm = ({ form, setForm, onNext }) => {
   const update = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }));
 
-  const [user, setuser] = useState(null)
-useEffect(() => {
-    const fetchUserDetails = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/getUserByToken`, {
-                withCredentials: true  // ← required for cookies
-            });
-            setuser(response.data.user);
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
+  const [user, setUser] = useState(null);
 
-    fetchUserDetails();
-}, []); // ← empty array = runs once on page load
+  useEffect(() => {
+    // ✅ read from localStorage instead of API call
+    const stored = localStorage.getItem("bakery_user");
+    if (stored) {
+      try {
+        setUser(JSON.parse(stored));
+      } catch {
+        console.error("Failed to parse user from localStorage");
+      }
+    }
+  }, []);
 
   return (
     <div>
@@ -43,14 +39,21 @@ useEffect(() => {
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-        <FormField label="Full Name" placeholder="Rajesh Kumar" readOnly value={`${user?.firstName ?? ''} ${user?.lastName ?? ''}`} onChange={update('fullName')} />
-        <FormField label="Phone Number" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={update('phone')} />
-        <FormField label="Email" type="email" placeholder="you@example.com" readOnly value={user?.email} onChange={update('email')} />
-        <FormField label="Address Line" placeholder="House no, Street, Area" value={form.address} onChange={update('address')} />
+        <FormField label="Full Name" placeholder="Rajesh Kumar" readOnly
+          value={user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : ''}
+          onChange={update('fullName')} />
+        <FormField label="Phone Number" type="tel" placeholder="+91 98765 43210"
+          value={form.phone} onChange={update('phone')} />
+        <FormField label="Email" type="email" placeholder="you@example.com" readOnly
+          value={user?.email ?? ''}
+          onChange={update('email')} />
+        <FormField label="Address Line" placeholder="House no, Street, Area"
+          value={form.address} onChange={update('address')} />
         <FormField label="City" placeholder="Surat" value={form.city} onChange={update('city')} half />
         <FormField label="State" placeholder="Gujarat" value={form.state} onChange={update('state')} half />
         <FormField label="Pincode" placeholder="395001" value={form.pincode} onChange={update('pincode')} half />
-        <FormField label="Landmark (optional)" placeholder="Near SBI Bank" value={form.landmark} onChange={update('landmark')} half />
+        <FormField label="Landmark (optional)" placeholder="Near SBI Bank"
+          value={form.landmark} onChange={update('landmark')} half />
       </div>
 
       {/* Delivery type */}
@@ -80,18 +83,13 @@ useEffect(() => {
 
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          onNext();
-        }}
+        onClick={(e) => { e.preventDefault(); onNext(); }}
         style={{
           marginTop: '28px', width: '100%', padding: '15px',
           background: 'linear-gradient(135deg, #a0642a, #7a3f10)',
-          color: '#fdf5ec',
-          borderRadius: '14px', border: 'none', cursor: 'pointer',
+          color: '#fdf5ec', borderRadius: '14px', border: 'none', cursor: 'pointer',
           fontSize: '14px', fontWeight: 700, letterSpacing: '0.8px', textTransform: 'uppercase',
-          boxShadow: '0 6px 20px rgba(120,70,20,0.3)',
-          transition: 'all 0.2s',
+          boxShadow: '0 6px 20px rgba(120,70,20,0.3)', transition: 'all 0.2s',
         }}>
         Continue to Payment →
       </button>
