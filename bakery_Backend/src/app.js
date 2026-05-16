@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-
+app.get('/health', (req, res) => res.json({ status: 'ok' })); // ✅ health check
 
 app.use('/api/cart',cartRoutes)
 app.use('/api/auth',authRoutes)

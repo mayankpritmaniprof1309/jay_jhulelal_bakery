@@ -15,6 +15,7 @@ async function authProtectMiddleware(req,res,next){
         req.user= await User.findById(decode.id)
         next()
     }catch(err){
+      
         return res.status(401).send({message:"Invalid Token"})
     }
 

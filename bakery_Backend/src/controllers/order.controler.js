@@ -53,6 +53,10 @@ async function placeOrder(req, res) {
       status:          'pending',
       isPaid:          false,
     });
+    return res.status(201).json({
+      message: "Order placed successfully",
+      data: order,
+    });
 
     // ✅ Step 4 — Send confirmation email
     await sendOrderConfirmationEmail(
@@ -64,10 +68,6 @@ async function placeOrder(req, res) {
       }
     );
 
-    return res.status(201).json({
-      message: "Order placed successfully",
-      data: order,
-    });
 
   } catch (err) {
     console.error('FULL ERROR:', err);
