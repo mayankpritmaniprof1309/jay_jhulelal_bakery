@@ -5,6 +5,8 @@ const Product=require('../models/Product')
 const { sendOrderConfirmationEmail } =require('./emailService')
 
 async function placeOrder(req, res) {
+    console.log('🧑 req.user:', req.user); // ✅ add this
+  console.log('📦 req.body:', req.body); // ✅ add this
   try {
     const { items, deliveryAddress } = req.body;
 
@@ -53,12 +55,8 @@ async function placeOrder(req, res) {
       status:          'pending',
       isPaid:          false,
     });
-    return res.status(201).json({
-      message: "Order placed successfully",
-      data: order,
-    });
-
     // ✅ Step 4 — Send confirmation email
+    console.log('📧 Attempting email to:', req.user.email);
     await sendOrderConfirmationEmail(
       req.user.email,
       `${req.user.firstName} ${req.user.lastName}`,
@@ -66,12 +64,21 @@ async function placeOrder(req, res) {
         items: formattedItems,
         total: totalPrice,
       }
-    );
+    )
+    .then(() => console.log('✅ Email sent to:', req.user.email))
+    .catch((err) => console.error('❌ Email failed:', err.message));
+    res.status(201).json({
+      message: "Order placed successfully",
+      data: order,
+    });
+
 
 
   } catch (err) {
     console.error('FULL ERROR:', err);
-    return res.status(500).json({ message: err.message });
+     if (!res.headersSent) {
+      return res.status(500).json({ message: err.message });
+    }
   }
 }
 
