@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
     }
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}0/api/auth/user/resetPassword`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/resetPassword`, {
         token,
         newPassword,
       });
