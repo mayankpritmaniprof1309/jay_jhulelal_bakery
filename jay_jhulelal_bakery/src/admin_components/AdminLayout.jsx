@@ -22,7 +22,7 @@ export default function AdminLayout({ children }) {
   const handleLogout = () => { logout(); navigate('/'); };
 
   const sidebarWidth = collapsed ? 64 : 228;
-
+const isMobile = window.innerWidth < 768;
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f0e8' }}>
 
@@ -50,7 +50,11 @@ export default function AdminLayout({ children }) {
         overflowX: 'hidden',
         boxShadow: '4px 0 20px rgba(0,0,0,0.15)',
         // Handle transform entirely in style, not className
-        transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transform: window.innerWidth >= 768
+  ? 'translateX(0)'
+  : mobileOpen
+    ? 'translateX(0)'
+    : 'translateX(-100%)',
         transition: 'width .3s ease, transform .3s ease',
       }}>
 

@@ -135,11 +135,20 @@ export function SignUpForm() {
       {/* Submit */}
       <button
         type="submit"
-        className="w-full mt-1 py-3 rounded-[10px] text-[#fdf5ec] text-[14px] font-semibold
-                   tracking-wide bg-linear-to-br from-[#a0642a] to-[#7a3f10]
-                   shadow-[0_4px_14px_rgba(120,70,20,0.32)] transition-all duration-200
-                   hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-[0_8px_24px_rgba(120,70,20,0.4)]
-                   active:scale-[0.98]"
+        className="w-full
+    py-3
+    bg-gradient-to-br from-[#a0642a] to-[#7a3f10]
+    text-white
+    rounded-xl
+    cursor-pointer
+    flex items-center justify-center gap-2
+    text-[15px] font-semibold tracking-wide
+    shadow-[0_4px_14px_rgba(120,70,20,0.3)]
+    transition-all duration-200
+    hover:-translate-y-0.5
+    hover:scale-[1.01]
+    hover:shadow-[0_8px_22px_rgba(120,70,20,0.38)]
+    active:scale-[0.98]"
       >
         Create account
       </button>
