@@ -3,29 +3,47 @@ const nodemailer = require('nodemailer');
 let transporter = null;
 
 function getTransporter() {
+
   if (!transporter) {
+
     transporter = nodemailer.createTransport({
+
       service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+
       auth: {
+
         user: process.env.EMAIL_USER,
+
         pass: process.env.EMAIL_PASS,
+
       },
-      family: 4,
+
+      connectionTimeout: 10000,
+
+      greetingTimeout: 10000,
+
+      socketTimeout: 10000,
+
     });
 
-    transporter.verify((err, success) => {
-      if (err) {
-        console.log('SMTP ERROR:', err);
+    transporter.verify((error, success) => {
+
+      if (error) {
+
+        console.log('SMTP ERROR:', error);
+
       } else {
-        console.log('SMTP READY');
+
+        console.log('SMTP SERVER READY');
+
       }
+
     });
+
   }
 
   return transporter;
+
 }
 
 async function sendOrderConfirmationEmail(toEmail, userName, orderDetails) {
