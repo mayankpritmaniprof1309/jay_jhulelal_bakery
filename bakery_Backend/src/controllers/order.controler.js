@@ -57,17 +57,25 @@ async function placeOrder(req, res) {
     });
     // ✅ Step 4 — Send confirmation email
     console.log('📧 Attempting email to:', req.user.email);
-    await sendOrderConfirmationEmail(
-      
-      req.user.email,
-      `${req.user.firstName} ${req.user.lastName}`,
-      {
-        items: formattedItems,
-        total: totalPrice,
-      }
-    )
-    .then(() => console.log('✅ Email sent to:', req.user.email))
-    .catch((err) => console.error('❌ Email failed:', err.message));
+
+try {
+
+  await sendOrderConfirmationEmail(
+    req.user.email,
+    `${req.user.firstName} ${req.user.lastName}`,
+    {
+      items: formattedItems,
+      total: totalPrice,
+    }
+  );
+
+  console.log('✅ Email sent to:', req.user.email);
+
+} catch (err) {
+
+  console.error('❌ Email failed:', err.message);
+
+}
 
     res.status(201).json({
       message: "Order placed successfully",
