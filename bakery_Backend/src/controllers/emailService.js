@@ -41,7 +41,7 @@ const itemsHTML = orderDetails.items.map(item => `
 
     const data = await resend.emails.send({
 
-      from: 'Jay Jhulelal Bakery <onboarding@resend.dev>',
+      from: 'Jay Jhulelal Bakery <jayjhulelalbakery@gmail.com>',
 
       to: toEmail,
 
