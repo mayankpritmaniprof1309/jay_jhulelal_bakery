@@ -13,7 +13,7 @@ const cartRequest = (body, signal) => {
   });
 };
 
-// ✅ flatten MongoDB ObjectId fields to plain strings
+
 const normalizeItems = (items) =>
   (items ?? []).map(item => ({
     ...item,
@@ -32,7 +32,7 @@ export function CartProvider({ children }) {
 
     cartRequest({ action: "GET" }, controller.signal)
       .then((res) => {
-        setCart(normalizeItems(res.data.items)); // ✅
+        setCart(normalizeItems(res.data.items)); 
         setError(null);
       })
       .catch((err) => {
@@ -66,18 +66,18 @@ export function CartProvider({ children }) {
       price:    product.price,
       quantity: product.quantity ?? 1,
     });
-    setCart(normalizeItems(res.data.items)); // ✅
+    setCart(normalizeItems(res.data.items)); 
   }, []);
 
   const updateQuantity = useCallback(async (productId, quantity) => {
     if (quantity < 1) return removeFromCart(productId);
     const res = await cartRequest({ action: "UPDATE", product: productId, quantity });
-    setCart(normalizeItems(res.data.items)); // ✅
+    setCart(normalizeItems(res.data.items)); 
   }, []);
 
   const removeFromCart = useCallback(async (productId) => {
     const res = await cartRequest({ action: "REMOVE", product: productId });
-    setCart(normalizeItems(res.data.items)); // ✅
+    setCart(normalizeItems(res.data.items));
   }, []);
 
   const clearCart = useCallback(async () => {
@@ -88,7 +88,7 @@ export function CartProvider({ children }) {
   const refreshCart = useCallback(async () => {
     setLoading(true);
     cartRequest({ action: "GET" })
-      .then((res) => setCart(normalizeItems(res.data.items))) // ✅
+      .then((res) => setCart(normalizeItems(res.data.items))) 
       .catch((err) => {
         if (err.response?.status !== 401) console.error("Cart refresh failed:", err.message);
         setCart([]);

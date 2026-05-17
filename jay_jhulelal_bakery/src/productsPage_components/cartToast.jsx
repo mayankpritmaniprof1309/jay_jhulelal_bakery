@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
 
-// ─── CartToast ───────────────────────────────────────────────────────────────
-// Usage:
-//   import { showCartToast } from "./CartToast";
-//   showCartToast({ name: "Product Name", image: "url", price: 99 });
-// ─────────────────────────────────────────────────────────────────────────────
 
 let _setToast = null;
 

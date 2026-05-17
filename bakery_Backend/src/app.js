@@ -11,14 +11,14 @@ const orderRoutes=require('../src/routes/order.routes')
 const productRoutes=require('../src/routes/product.routes')
 
 app.use(cors({
-  origin: ["https://jay-jhulelal-bakery.vercel.app", "http://localhost:5173"],  // ← Exact URL, no wildcard
+  origin: ["https://jay-jhulelal-bakery.vercel.app", "http://localhost:5173"], 
   credentials: true,
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-app.get('/health', (req, res) => res.json({ status: 'ok' })); // ✅ health check
+app.get('/health', (req, res) => res.json({ status: 'ok' })); 
 
 app.use('/api/cart',cartRoutes)
 app.use('/api/auth',authRoutes)

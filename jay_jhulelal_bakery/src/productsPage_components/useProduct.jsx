@@ -29,7 +29,7 @@ const useProducts = () => {
     }
 
     getProducts();
-    return () => controller.abort(); // ✅ cancel on unmount
+    return () => controller.abort(); // cancel on unmount
   }, []);
 
   return { products, loading, error };

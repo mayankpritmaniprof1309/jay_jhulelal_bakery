@@ -58,7 +58,7 @@ async function loginUser(req, res) {
 
     const token = generatetoken(userExist._id);
 
-    // ✅ no more cookies — token sent in response body only
+    // token sent in response body only
     res.status(200).json({
       message: "Logged In Successfully",
       user: {
@@ -66,7 +66,7 @@ async function loginUser(req, res) {
         email:     userExist.email,
         firstName: userExist.firstName,
         isAdmin:   userExist.isAdmin,
-        token,                          // ✅ frontend stores this in localStorage
+        token,                         
       },
     });
 

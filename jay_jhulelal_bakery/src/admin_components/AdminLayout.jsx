@@ -49,7 +49,6 @@ const isMobile = window.innerWidth < 768;
         zIndex: 100,
         overflowX: 'hidden',
         boxShadow: '4px 0 20px rgba(0,0,0,0.15)',
-        // Handle transform entirely in style, not className
         transform: window.innerWidth >= 768
   ? 'translateX(0)'
   : mobileOpen

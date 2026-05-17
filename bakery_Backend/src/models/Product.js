@@ -1,12 +1,3 @@
-// ─────────────────────────────────────────────
-//  models/Product.js  —  MongoDB Product Schema
-// ─────────────────────────────────────────────
-//
-//  Mirrors the product objects currently
-//  hardcoded in App.jsx. Once the backend is
-//  running, the frontend fetches products from
-//  here instead.
-//
 
 const mongoose = require('mongoose');
 

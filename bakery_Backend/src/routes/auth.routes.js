@@ -30,7 +30,6 @@ router.post('/user/resetPassword',authController.resetPassword)
 
 
 
-// Add temporarily to auth.routes.js
 const { sendOrderConfirmationEmail } = require('../controllers/emailService');
 
 router.get('/test-email', async (req, res) => {

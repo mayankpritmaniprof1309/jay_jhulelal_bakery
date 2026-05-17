@@ -12,7 +12,7 @@ async function cartManagement(req, res) {
     let cart = await Cart.findOne({ user: userId });
     if (!cart) {
       cart = new Cart({ user: userId, items: [] });
-      await cart.save(); // ✅ persist new cart immediately
+      await cart.save(); 
     }
 
     if (action === "GET") {
@@ -20,7 +20,7 @@ async function cartManagement(req, res) {
     }
 
     if (action === "ADD") {
-      // ✅ validate required fields
+      // validate required fields
       if (!product || !name || !price) {
         return res.status(400).json({ message: "Missing required fields: product, name, price" });
       }
@@ -67,7 +67,7 @@ async function cartManagement(req, res) {
 
   } catch (err) {
     console.error("Cart error:", err.message);
-    return res.status(500).json({ message: "Cart error", error: err.message }); // ✅ 500 not 401
+    return res.status(500).json({ message: "Cart error", error: err.message });
   }
 }
 
@@ -77,9 +77,9 @@ async function getUserByToken(req, res) {
 
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decode.id).select("-password"); // ✅ never send password
+    const user = await User.findById(decode.id).select("-password"); 
     if (!user) return res.status(404).json({ message: "User not found" });
-    res.json({ user }); // ✅ use res.json not res.send
+    res.json({ user }); 
   } catch (err) {
     return res.status(401).json({ message: err.message });
   }

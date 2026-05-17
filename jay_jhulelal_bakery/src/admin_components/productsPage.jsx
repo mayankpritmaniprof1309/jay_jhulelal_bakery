@@ -149,17 +149,16 @@ export default function ProductsPage() {
     }
   }
 
-  // Called by AddProductModal after success
+  
   function handleProductAdded(newProduct) {
     setProducts(prev => [newProduct, ...prev]);
   }
 
-  // Called by EditProductModal after success
   function handleProductUpdated(updated) {
     setProducts(prev => prev.map(p => p._id === updated._id ? updated : p));
   }
 
-  // Called by ProductCard after delete
+
   function handleProductDeleted(id) {
     setProducts(prev => prev.filter(p => p._id !== id));
   }

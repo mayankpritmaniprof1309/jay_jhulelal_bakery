@@ -21,9 +21,9 @@ export default function LoginPage() {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/user/login`,
         { email: formdata.email, password: formdata.password }
-        // ✅ no withCredentials needed — using localStorage now
+        
       );
-      login(response.data.user); // ✅ login() handles navigate + refreshCart
+      login(response.data.user); 
     } catch (err) {
       if (err.response?.status === 404) {
         alert('Invalid Email or Password');

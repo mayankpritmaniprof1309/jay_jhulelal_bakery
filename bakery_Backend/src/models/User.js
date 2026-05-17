@@ -39,16 +39,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// ── Password hashing BEFORE saving ──────────
-//
-// This is a Mongoose "pre-save hook".
-// It runs automatically every time a user
-// document is saved.
-//
-// bcrypt.hash() takes the plain password and
-// scrambles it so we NEVER store passwords
-// as plain text in the database.
-//
+//Password hashing
+
 userSchema.pre('save', async function () {
   // Only re-hash if the password field was modified
   if (!this.isModified('password')) return ;
@@ -58,11 +50,8 @@ userSchema.pre('save', async function () {
 
 });
 
-// ── Helper method to check password ─────────
-//
-// Called during login to compare what the user
-// typed with the hashed password in the DB.
-//
+// check password 
+
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };

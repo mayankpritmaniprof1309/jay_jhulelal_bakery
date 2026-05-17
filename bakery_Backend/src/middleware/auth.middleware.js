@@ -4,9 +4,9 @@ const jwt=require('jsonwebtoken')
 async function authProtectMiddleware(req,res,next){
     let token;
       if (req.headers.authorization?.startsWith("Bearer")) {
-    token = req.headers.authorization.split(" ")[1]; // ← from our header
+    token = req.headers.authorization.split(" ")[1]; 
   } else if (req.cookies?.token) {
-    token = req.cookies.token;                        // ← fallback to cookie
+    token = req.cookies.token;                
   }
 
     if(!token) return res.status(401).send({message:"Please Login In First"})

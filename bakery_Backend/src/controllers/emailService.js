@@ -40,204 +40,105 @@ const itemsHTML = orderDetails.items.map(item => `
   try {
 
     const data = await resend.emails.send({
-
       from: 'Jay Jhulelal Bakery <jayjhulelalbakery@gmail.com>',
-
       to: toEmail,
-
       subject: '🎉 Order Confirmed - Jay Jhulelal Bakery',
-
       html: `
         <div style="
-
     font-family: Georgia, serif;
-
     max-width: 600px;
-
     margin: auto;
-
     background: #fdf5ec;
-
     padding: 32px;
-
     border-radius: 14px;
-
     border: 1px solid #ead7bd;
-
   ">
-
     <h1 style="
-
       color: #7a3f10;
-
       font-size: 30px;
-
       margin-bottom: 10px;
-
     ">
-
       Thank you, ${userName}! 🧁
-
     </h1>
-
     <p style="
-
       color: #7a5c38;
-
       font-size: 16px;
-
       line-height: 1.6;
-
       margin-bottom: 24px;
-
     ">
-
       Your order has been confirmed successfully.
-
       We’re already preparing your delicious treats with love ❤️
-
     </p>
-
     <table style="
-
       width: 100%;
-
       border-collapse: collapse;
-
       background: #ffffff;
-
       border-radius: 10px;
-
       overflow: hidden;
-
     ">
-
       <thead>
-
         <tr style="
-
           background: #a0642a;
-
           color: white;
-
         ">
-
           <th style="
-
             padding: 14px;
-
             text-align: left;
-
           ">
-
             Item
-
           </th>
-
           <th style="
-
             padding: 14px;
-
             text-align: center;
-
           ">
-
             Qty
-
           </th>
-
           <th style="
-
             padding: 14px;
-
             text-align: right;
-
           ">
-
             Price
-
           </th>
-
         </tr>
-
       </thead>
-
       <tbody>
-
         ${itemsHTML}
-
       </tbody>
-
     </table>
-
     <div style="
-
       margin-top: 28px;
-
       text-align: right;
-
     ">
-
       <h2 style="
-
         color: #7a3f10;
-
         margin: 0;
-
       ">
-
         Total: ₹${orderDetails.total}
-
       </h2>
-
     </div>
-
     <div style="
-
       margin-top: 32px;
-
       background: #fff7ee;
-
       padding: 18px;
-
       border-radius: 10px;
-
       border: 1px solid #f0dcc0;
-
     ">
-
       <p style="
-
         margin: 0;
-
         color: #7a5c38;
-
         font-size: 15px;
-
       ">
-
         We'll notify you once your order is out for delivery 🚚
-
       </p>
-
     </div>
-
     <p style="
-
       margin-top: 36px;
-
       color: #a0642a;
-
       font-weight: bold;
-
       font-size: 16px;
-
     ">
-
       — Jay Jhulelal Bakery Team
-
     </p>
-
   </div>
       `,
     });

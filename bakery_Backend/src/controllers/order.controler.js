@@ -14,7 +14,7 @@ async function placeOrder(req, res) {
     //   return res.status(400).json({ message: "Order must have at least one item" });
     // }
 
-    // // ✅ Step 1 — Check stock for all items first
+    // //   Check stock for all items first
     // for (const item of items) {
     //   const product = await Product.findById(item.product);
 
@@ -29,14 +29,14 @@ async function placeOrder(req, res) {
     //   }
     // }
 
-    // // ✅ Step 2 — Deduct stock for all items
+    // //  Deduct stock for all items
     // for (const item of items) {
     //   await Product.findByIdAndUpdate(item.product, {
     //     $inc: { stock: -item.quantity }
     //   });
     // }
 
-    // ✅ Step 3 — Create the order
+    // Create the order
     const formattedItems = items.map(item => ({
       product:  item.product,
       name:     item.name,
@@ -55,7 +55,7 @@ async function placeOrder(req, res) {
       status:          'pending',
       isPaid:          false,
     });
-    // ✅ Step 4 — Send confirmation email
+    // Send confirmation email
     console.log('📧 Attempting email to:', req.user.email);
 
 try {
@@ -69,11 +69,11 @@ try {
     }
   );
 
-  console.log('✅ Email sent to:', req.user.email);
+  console.log('Email sent to:', req.user.email);
 
 } catch (err) {
 
-  console.error('❌ Email failed:', err.message);
+  console.error(' Email failed:', err.message);
 
 }
 

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // ── restore session on page refresh ───────────────────────────────
+  //  restore session on page refresh 
   useEffect(() => {
     const stored = localStorage.getItem("bakery_user");
     if (stored) {
@@ -26,20 +26,20 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // ── login ──────────────────────────────────────────────────────────
+  //  login 
   const login = useCallback((userData) => {
     setUser(userData);
     setIsAdmin(userData.isAdmin === true);
-    localStorage.setItem("bakery_user", JSON.stringify(userData)); // ✅ token is inside userData
+    localStorage.setItem("bakery_user", JSON.stringify(userData)); //  token is inside userData
     refreshCart();
     navigate(userData.isAdmin ? '/admin' : '/');
   }, [navigate, refreshCart]);
 
-  // ── logout ─────────────────────────────────────────────────────────
+  // logout 
   const logout = useCallback(() => {
     setUser(null);
     setIsAdmin(false);
-    localStorage.removeItem("bakery_user"); // ✅ clears token too since it's inside user object
+    localStorage.removeItem("bakery_user"); // clears token too since it's inside user object
     navigate('/');
   }, [navigate]);
 

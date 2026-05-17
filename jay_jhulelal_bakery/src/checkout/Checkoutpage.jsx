@@ -30,7 +30,7 @@ const CheckoutPage = () => {
     console.log('cart items:', JSON.stringify(cart));
   setPlacing(true);
   try {
-    // ✅ read token from localStorage
+    //token from localStorage
     const user  = JSON.parse(localStorage.getItem("bakery_user") || "{}");
     const token = user?.token;
 
@@ -52,7 +52,7 @@ const CheckoutPage = () => {
         },
       },
       {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ send token in header
+        headers: { Authorization: `Bearer ${token}` }, //  send token in header
       }
     );
 
@@ -64,7 +64,7 @@ const CheckoutPage = () => {
     message:  err.message,
     response: err.response?.data,
     status:   err.response?.status,
-    url:      err.config?.url,       // ✅ shows exact URL being called
+    url:      err.config?.url,      
   });
     console.error("Order failed:", err.response?.data);
     alert("Failed to place order. Please try again.");

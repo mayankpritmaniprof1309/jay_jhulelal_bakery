@@ -8,7 +8,7 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // ✅ read from localStorage instead of API call
+    //  read from localStorage instead of API call
     const stored = localStorage.getItem("bakery_user");
     if (stored) {
       try {
