@@ -154,3 +154,6 @@ Content-Type:application/json
 
 //Delete Product
 GET http://localhost:3000/api/product/deleteProduct/6a05a85edac10bb96c9f86cc
+
+//low stock
+GET http://localhost:3000/api/product/lowStock
