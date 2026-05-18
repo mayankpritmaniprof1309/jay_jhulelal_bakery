@@ -6,23 +6,28 @@ import AdminRoutes from './routes/adminRoutes'
 import CartToast from './productsPage_components/cartToast'
 
 const App = () => {
-  const { isAdmin, loading } = useAuth()
 
-  if (loading) return <p>Loading...</p>
-
-  if (isAdmin) {
-    return (
-      <AdminLayout>
-        <AdminRoutes />
-      </AdminLayout>
-    )
-  }
+  const { isAdmin } = useAuth()
 
   return (
     <>
-      <Navbar />
-      <CartToast />
-      <AppRoutes />
+
+      {isAdmin ? (
+
+        <AdminLayout>
+          <AdminRoutes />
+        </AdminLayout>
+
+      ) : (
+
+        <>
+          <Navbar />
+          <CartToast />
+          <AppRoutes />
+        </>
+
+      )}
+
     </>
   )
 }
