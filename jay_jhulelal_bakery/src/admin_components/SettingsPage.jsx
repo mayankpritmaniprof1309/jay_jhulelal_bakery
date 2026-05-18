@@ -42,11 +42,15 @@ export default function AdminSettingsPage() {
     setTimeout(() => setToast(''), 3000);
   };
 
+  // ✅ FIXED: reads token from localStorage and sends as Bearer header
   const fetchLowStock = async () => {
     setStockLoading(true);
     try {
+      const user = JSON.parse(localStorage.getItem('bakery_user'));
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/lowStock`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
       });
       setLowStock(res.data);
     } catch (err) {
