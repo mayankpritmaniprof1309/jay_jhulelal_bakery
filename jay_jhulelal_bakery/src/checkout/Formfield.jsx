@@ -14,7 +14,7 @@ const inputStyle = {
   transition: 'border-color 0.2s, box-shadow 0.2s',
 };
 
-const FormField = ({ label, type = 'text', placeholder, value, onChange, half, readOnly}) => (
+const FormField = ({ label, type = 'text', placeholder, value, onChange, half, readOnly,required}) => (
   <div style={{ flex: half ? '1 1 calc(50% - 8px)' : '1 1 100%', minWidth: half ? '140px' : 'auto' }}>
     <label style={{
       display: 'block', fontSize: '11px', fontWeight: 700,
@@ -23,6 +23,7 @@ const FormField = ({ label, type = 'text', placeholder, value, onChange, half, r
     }}>{label}</label>
     <input
       readOnly={readOnly} 
+      required={required}
       type={type}
       placeholder={placeholder}
       value={value}

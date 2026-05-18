@@ -8,7 +8,6 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    //  read from localStorage instead of API call
     const stored = localStorage.getItem("bakery_user");
     if (stored) {
       try {
@@ -19,8 +18,14 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
     }
   }, []);
 
+  // Wraping everything in a <form> and handle submit here
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onNext();
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       {/* Section header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
         <div style={{
@@ -42,16 +47,16 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
         <FormField label="Full Name" placeholder="Rajesh Kumar" readOnly
           value={user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : ''}
           onChange={update('fullName')} />
-        <FormField label="Phone Number" type="tel" placeholder="+91 98765 43210"
+        <FormField label="Phone Number" required={true} type="tel" placeholder="+91 98765 43210"
           value={form.phone} onChange={update('phone')} />
         <FormField label="Email" type="email" placeholder="you@example.com" readOnly
           value={user?.email ?? ''}
           onChange={update('email')} />
-        <FormField label="Address Line" placeholder="House no, Street, Area"
+        <FormField label="Address Line" required={true} placeholder="House no, Street, Area"
           value={form.address} onChange={update('address')} />
-        <FormField label="City" placeholder="Surat" value={form.city} onChange={update('city')} half />
-        <FormField label="State" placeholder="Gujarat" value={form.state} onChange={update('state')} half />
-        <FormField label="Pincode" placeholder="395001" value={form.pincode} onChange={update('pincode')} half />
+        <FormField label="City" required={true} placeholder="Anand" value={form.city} onChange={update('city')} half />
+        <FormField label="State" required={true} placeholder="Gujarat" value={form.state} onChange={update('state')} half />
+        <FormField label="Pincode" required={true} placeholder="395001" value={form.pincode} onChange={update('pincode')} half />
         <FormField label="Landmark (optional)" placeholder="Near SBI Bank"
           value={form.landmark} onChange={update('landmark')} half />
       </div>
@@ -81,9 +86,9 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
         </div>
       </div>
 
+
       <button
-        type="button"
-        onClick={(e) => { e.preventDefault(); onNext(); }}
+        type="submit"
         style={{
           marginTop: '28px', width: '100%', padding: '15px',
           background: 'linear-gradient(135deg, #a0642a, #7a3f10)',
@@ -93,7 +98,7 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
         }}>
         Continue to Payment →
       </button>
-    </div>
+    </form>
   );
 };
 
