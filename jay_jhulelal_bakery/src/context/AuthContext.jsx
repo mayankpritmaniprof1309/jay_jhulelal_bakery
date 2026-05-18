@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const { refreshCart } = useCart();
   const [user, setUser]       = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   //  restore session on page refresh 
   useEffect(() => {
