@@ -11,7 +11,7 @@ const orderRoutes=require('../src/routes/order.routes')
 const productRoutes=require('../src/routes/product.routes')
 
 app.use(cors({
-  origin: ["https://jay-jhulelal-bakery.vercel.app", "http://localhost:5173"], 
+  origin: ["https://jay-jhulelal-bakery.vercel.app", "https://jayjhulelalbakery.shop",,"http://localhost:5173"], 
   credentials: true,
 }))
 app.use(express.json())

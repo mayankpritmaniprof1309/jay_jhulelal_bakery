@@ -158,7 +158,7 @@ async function sendEmail(to, resetToken) {
 
     const data = await resend.emails.send({
 
-      from: 'Jay Jhulelal Bakery <onboarding@resend.dev>',
+      from: 'Jay Jhulelal Bakery <orders@jayjhulelalbakery.shop>',
 
       to,
 
