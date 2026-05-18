@@ -56,7 +56,7 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
           value={form.address} onChange={update('address')} />
         <FormField label="City" required={true} placeholder="Anand" value={form.city} onChange={update('city')} half />
         <FormField label="State" required={true} placeholder="Gujarat" value={form.state} onChange={update('state')} half />
-        <FormField label="Pincode" required={true} placeholder="395001" value={form.pincode} onChange={update('pincode')} half />
+        <FormField label="Pincode" required={true} placeholder="395001" type="tel" value={form.pincode} onChange={update('pincode')} half />
         <FormField label="Landmark (optional)" placeholder="Near SBI Bank"
           value={form.landmark} onChange={update('landmark')} half />
       </div>
