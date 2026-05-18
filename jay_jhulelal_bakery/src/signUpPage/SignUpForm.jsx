@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { UserIcon, MailIcon, LockIcon, EyeIcon, EyeOffIcon } from "./Icons";
 
-function InputField({ id, label, type = "text", placeholder, icon, showToggle, value, onChange }) {
+function InputField({ id, label, type = "text", placeholder, icon, showToggle, value, onChange, error }) {
   const [show, setShow] = useState(false);
   return (
     <div className="flex flex-col gap-1">
@@ -21,13 +21,17 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle, v
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="w-full pl-8 pr-9 py-[9.5px] text-[13.5px] text-[#3b2409]
+          className={`w-full pl-8 pr-9 py-[9.5px] text-[13.5px] text-[#3b2409]
                      placeholder-[#b89870] bg-[rgba(245,233,220,0.65)]
-                     border-[1.5px] border-[rgba(160,110,60,0.32)] rounded-[10px]
+                     border-[1.5px] rounded-[10px]
                      outline-none transition-all duration-200
                      hover:border-[#c09060]
-                     focus:border-[#a0642a] focus:bg-[rgba(245,233,220,0.95)]
-                     focus:ring-[3px] focus:ring-[rgba(160,100,42,0.14)]"
+                     focus:bg-[rgba(245,233,220,0.95)]
+                     focus:ring-[3px]
+                     ${error
+                       ? 'border-[#c0392b] focus:border-[#c0392b] focus:ring-[rgba(192,57,43,0.14)]'
+                       : 'border-[rgba(160,110,60,0.32)] focus:border-[#a0642a] focus:ring-[rgba(160,100,42,0.14)]'
+                     }`}
         />
         {showToggle && (
           <button
@@ -40,6 +44,9 @@ function InputField({ id, label, type = "text", placeholder, icon, showToggle, v
           </button>
         )}
       </div>
+      {error && (
+        <p className="text-[11px] text-[#c0392b] font-medium mt-0.5">{error}</p>
+      )}
     </div>
   );
 }
@@ -54,6 +61,7 @@ export function SignUpForm() {
     confirmPassword: '',
     terms: false,
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -61,17 +69,32 @@ export function SignUpForm() {
       ...prev,
       [id]: type === 'checkbox' ? checked : value,
     }));
+    // Clear error on change
+    if (errors[id]) {
+      setErrors((prev) => ({ ...prev, [id]: '' }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    if (!formData.terms) {
+      newErrors.terms = 'Please accept the Terms of Service';
+    }
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    if (!formData.terms) {
-      alert('Please accept the Terms of Service');
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -115,21 +138,28 @@ export function SignUpForm() {
       {/* Passwords row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <InputField id="password" label="Password" placeholder="••••••••"
-          icon={<LockIcon />} showToggle value={formData.password} onChange={handleChange} />
+          icon={<LockIcon />} showToggle value={formData.password}
+          onChange={handleChange} error={errors.password} />
         <InputField id="confirmPassword" label="Confirm password" placeholder="••••••••"
-          icon={<LockIcon />} showToggle value={formData.confirmPassword} onChange={handleChange} />
+          icon={<LockIcon />} showToggle value={formData.confirmPassword}
+          onChange={handleChange} error={errors.confirmPassword} />
       </div>
 
       {/* Terms */}
-      <div className="flex items-start gap-2 text-[12px] text-[#7a5c38] mt-1">
-        <input type="checkbox" id="terms" checked={formData.terms}
-          onChange={handleChange} className="mt-0.5 accent-[#a0642a] shrink-0" />
-        <label htmlFor="terms">
-          I agree to the{" "}
-          <a href="#" className="text-[#8b5020] font-medium hover:underline">Terms of Service</a>
-          {" "}and{" "}
-          <a href="#" className="text-[#8b5020] font-medium hover:underline">Privacy Policy</a>
-        </label>
+      <div className="flex flex-col gap-1 mt-1">
+        <div className="flex items-start gap-2 text-[12px] text-[#7a5c38]">
+          <input type="checkbox" id="terms" checked={formData.terms}
+            onChange={handleChange} className="mt-0.5 accent-[#a0642a] shrink-0" />
+          <label htmlFor="terms">
+            I agree to the{" "}
+            <a href="#" className="text-[#8b5020] font-medium hover:underline">Terms of Service</a>
+            {" "}and{" "}
+            <a href="#" className="text-[#8b5020] font-medium hover:underline">Privacy Policy</a>
+          </label>
+        </div>
+        {errors.terms && (
+          <p className="text-[11px] text-[#c0392b] font-medium ml-5">{errors.terms}</p>
+        )}
       </div>
 
       {/* Submit */}
