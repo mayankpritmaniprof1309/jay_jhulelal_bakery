@@ -51,10 +51,10 @@ async function loginUser(req, res) {
     const { email, password } = req.body;
 
     const userExist = await User.findOne({ email });
-    if (!userExist) return res.status(404).json({ message: "Invalid User Or Password" });
+    if (!userExist) return res.status(401).json({ message: "Invalid User Or Password" });
 
     const isMatch = await userExist.comparePassword(password);
-    if (!isMatch) return res.status(404).json({ message: "Invalid User Or Password" });
+    if (!isMatch) return res.status(401).json({ message: "Invalid User Or Password" });
 
     const token = generatetoken(userExist._id);
 

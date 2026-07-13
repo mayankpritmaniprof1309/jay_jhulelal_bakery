@@ -25,7 +25,7 @@ export default function LoginPage() {
       );
       login(response.data.user); 
     } catch (err) {
-      if (err.response?.status === 404) {
+      if (err.response?.status === 404 || err.response?.status === 401) {
         alert('Invalid Email or Password');
       } else {
         console.error('Login error:', err.message);
