@@ -21,9 +21,9 @@ export default function LoginPage() {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/user/login`,
         { email: formdata.email, password: formdata.password }
-        
+
       );
-      login(response.data.user); 
+      login(response.data.user);
     } catch (err) {
       if (err.response?.status === 404 || err.response?.status === 401) {
         alert('Invalid Email or Password');
@@ -151,7 +151,7 @@ export default function LoginPage() {
     hover:shadow-[0_8px_22px_rgba(120,70,20,0.38)]
     active:scale-[0.98]"
         >
-          Sign in
+          login
         </button>
 
         {/* Sign up link */}
