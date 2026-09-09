@@ -44,12 +44,12 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-        <FormField label="Full Name" placeholder="Rajesh Kumar" readOnly
+        <FormField label="Full Name" placeholder="first name" readOnly
           value={user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : ''}
           onChange={update('fullName')} />
         <FormField label="Phone Number" required={true} type="tel" placeholder="+91 98765 43210"
           value={form.phone} onChange={update('phone')} />
-        <FormField label="Email" type="email" placeholder="you@example.com" readOnly
+        <FormField label="Email" type="email" placeholder="email" readOnly
           value={user?.email ?? ''}
           onChange={update('email')} />
         <FormField label="Address Line" required={true} placeholder="House no, Street, Area"
