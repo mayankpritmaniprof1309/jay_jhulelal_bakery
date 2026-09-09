@@ -52,7 +52,7 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
         <FormField label="Email" type="email" placeholder="email" readOnly
           value={user?.email ?? ''}
           onChange={update('email')} />
-        <FormField label="Address Line" required={true} placeholder="House no, Street, Area"
+        <FormField label="Address Line" required={true} placeholder="address line"
           value={form.address} onChange={update('address')} />
         <FormField label="City" required={true} placeholder="city" value={form.city} onChange={update('city')} half />
         <FormField label="State" required={true} placeholder="state" value={form.state} onChange={update('state')} half />

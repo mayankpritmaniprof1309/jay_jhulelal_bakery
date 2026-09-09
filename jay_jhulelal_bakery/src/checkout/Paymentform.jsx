@@ -5,7 +5,7 @@ import { CardIcon, LockIcon } from './Checkouticons';
 const methods = [
   // { id: 'card', label: 'Credit / Debit Card', icon: '💳' },  //Currently disabled but can be used in future
   // { id: 'upi',  label: 'UPI',                 icon: '⚡' },  //Currently disabled but can be used in future
-  { id: 'cod',  label: 'Cash on Delivery',    icon: '💵' },
+  { id: 'cod', label: 'Cash on Delivery', icon: '💵' },
 ];
 
 const PaymentForm = ({ form, setForm, onNext, onBack }) => {
