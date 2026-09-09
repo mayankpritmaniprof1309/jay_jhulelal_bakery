@@ -47,17 +47,17 @@ const DeliveryForm = ({ form, setForm, onNext }) => {
         <FormField label="Full Name" placeholder="first name" readOnly
           value={user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() : ''}
           onChange={update('fullName')} />
-        <FormField label="Phone Number" required={true} type="tel" placeholder="+91 98765 43210"
+        <FormField label="Phone Number" required={true} type="tel" placeholder="phone number"
           value={form.phone} onChange={update('phone')} />
         <FormField label="Email" type="email" placeholder="email" readOnly
           value={user?.email ?? ''}
           onChange={update('email')} />
         <FormField label="Address Line" required={true} placeholder="House no, Street, Area"
           value={form.address} onChange={update('address')} />
-        <FormField label="City" required={true} placeholder="Anand" value={form.city} onChange={update('city')} half />
-        <FormField label="State" required={true} placeholder="Gujarat" value={form.state} onChange={update('state')} half />
-        <FormField label="Pincode" required={true} placeholder="395001" type="tel" value={form.pincode} onChange={update('pincode')} half />
-        <FormField label="Landmark (optional)" placeholder="Near SBI Bank"
+        <FormField label="City" required={true} placeholder="city" value={form.city} onChange={update('city')} half />
+        <FormField label="State" required={true} placeholder="state" value={form.state} onChange={update('state')} half />
+        <FormField label="Pincode" required={true} placeholder="pincode" type="tel" value={form.pincode} onChange={update('pincode')} half />
+        <FormField label="Landmark (optional)" placeholder="landmark"
           value={form.landmark} onChange={update('landmark')} half />
       </div>
 
